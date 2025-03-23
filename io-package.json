@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "fyta",
-        "version": "0.1.4",
+        "version": "0.1.5",
         "news": {
             "0.1.4": {
                 "en": "minor changes due to publishing to ioBroker.repository:latest",

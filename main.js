@@ -357,7 +357,7 @@ class Fyta extends utils.Adapter {
 								this.log.debug(`Skipped downloading file /${this.name}/${filename}`);
 								return;
 							}
-							this.downloadImage(plant[property], filename, token)
+							this.downloadImage(plant[property], filename, resultLogin.token)
 								.then((filename) => {
 									this.setStateOrCreate(`${plantObjectID}.${property}_local`, filename, {
 										common: {
