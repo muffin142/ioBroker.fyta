@@ -11,6 +11,60 @@ const axios = require("axios");
 const path = require("path");
 const statesDefinition = require("./lib/statesDefinition.js");
 
+const getDefaultPlantProperties = (plant) => ({
+	/* Properties should be aligned */
+	name: plant.nickname,
+	sName: plant.scientific_name,
+});
+
+const getDefaultDeviceProperties = (device) => ({
+	id: device.id,
+});
+
+const notificationRelevantStates = {
+	plant: {
+		moisture_status: {
+			active: true,
+			filter: (val) => val !== 3 || true,
+			notification: {
+				category: "humidityNotPerfect",
+				template: (plant) => ({
+					...getDefaultPlantProperties(plant),
+					message: `Plant ${plant.nickname} is not having a perfect moisture status`,
+					actual: plant.moisture_status,
+				}),
+			},
+		},
+		isDoingGreat: {
+			active: true,
+			filter: (val) => val === false,
+			notification: {
+				category: "plantNotDoingGreat",
+				template: (plant) => ({
+					...getDefaultPlantProperties(plant),
+					message: `Plant ${plant.nickname} is not doing great`,
+					actual: plant.isDoingGreat,
+				}),
+			},
+		},
+	},
+	sensor: {
+		is_battery_low: {
+			active: true,
+			filter: (val) => val === true,
+			notification: {
+				category: "lowBattery",
+				template: (sensor) => ({
+					...getDefaultDeviceProperties(sensor),
+					message: `Sensor ${sensor.id} is low on battery`,
+					id: sensor.id,
+					actual: sensor.is_battery_low,
+				}),
+			},
+		},
+	},
+};
+
 class Fyta extends utils.Adapter {
 	/**
 	 * @param [options] options
@@ -176,13 +230,13 @@ class Fyta extends utils.Adapter {
 
 				return {
 					token: response.data.access_token,
-					shouldStop: false
+					shouldStop: false,
 				};
 			} else {
 				this.log.error("An error occured while logging into FYTA API (HTTP-Status ${response.status}).");
 			}
 		} catch (error) {
-			// handle error			
+			// handle error
 			if (/\b401\b/.test(error)) {
 				this.log.error("Login to FYTA API was rejected due to wrong Password. Please check config.");
 				shouldStop = true;
@@ -197,7 +251,7 @@ class Fyta extends utils.Adapter {
 		this.setState("info.connection", false, true);
 
 		return {
-			shouldStop: shouldStop
+			shouldStop: shouldStop,
 		};
 	}
 
@@ -257,168 +311,174 @@ class Fyta extends utils.Adapter {
 
 				//
 				// Looping gardens
-				data.gardens.forEach(async (garden) => {
-					this.log.debug(`Handling garden ${garden.garden_name}`);
+				await Promise.all(
+					data.gardens.map(async (garden) => {
+						this.log.debug(`Handling garden ${garden.garden_name}`);
 
-					// Create garden object
-					this.log.debug("Create Object if not exists");
-					const gardenObjectID = this.cleanName(garden.garden_name);
-					this.setObjectNotExists(gardenObjectID, {
-						type: "folder",
-						common: {
-							name: garden.garden_name,
-							icon: "/icons/garden.png",
-						},
-						native: {},
-					});
+						// Create garden object
+						this.log.debug("Create Object if not exists");
+						const gardenObjectID = this.cleanName(garden.garden_name);
+						this.setObjectNotExists(gardenObjectID, {
+							type: "folder",
+							common: {
+								name: garden.garden_name,
+								icon: "/icons/garden.png",
+							},
+							native: {},
+						});
 
-					// Create garden states
-					this.log.debug("Create states...");
-					this.setStatesOrCreate(gardenObjectID, garden, statesDefinition.garden);
-				});
+						// Create garden states
+						this.log.debug("Create states...");
+						this.setStatesOrCreate(gardenObjectID, garden, "garden");
+					}),
+				);
 
 				//
 				// looping plants
-				data.plants.forEach(async (plant) => {
-					this.log.debug(`Handling plant ${plant.nickname}`);
+				await Promise.all(
+					data.plants.map(async (plant) => {
+						this.log.debug(`Handling plant ${plant.nickname}`);
 
-					// Create plant object
-					let plantObjectID = "";
-					//if(this.options.dataLayout == "nested"){
-					// Place plant-object in garden
+						// Create plant object
+						let plantObjectID = "";
+						//if(this.options.dataLayout == "nested"){
+						// Place plant-object in garden
 
-					// Defaulting to virtual garden
-					plantObjectID = `${virtualGardenNameCleaned}.${this.cleanName(plant.nickname)}`;
+						// Defaulting to virtual garden
+						plantObjectID = `${virtualGardenNameCleaned}.${this.cleanName(plant.nickname)}`;
 
-					// Lookup for garden
-					if (plant.garden && plant.garden.id) {
-						const garden = data.gardens.find((g) => g.id === plant.garden.id);
-						if (garden === null) {
-							this.log.error(`Can't find defined garden for plant ${plant.nickname} (ID ${plant.id})`);
-							return;
-						}
-						this.log.debug(`Belongs to garden ${JSON.stringify(garden)}`);
-						plantObjectID = `${this.cleanName(garden.garden_name)}.${this.cleanName(plant.nickname)}`;
-					}
-					//}else if(this.options.dataLayout == "flat"){
-					//	plantObjectID = this.cleanName(plant.nickname);
-					//}else{
-					//	this.log.error("Unknown value for option \"dataLayout\": " + JSON.stringify(this.options.dataLayout));
-					//	return;
-					//}
-
-					// Need to create virtual garden?
-					if (plantObjectID.indexOf(`${virtualGardenNameCleaned}.`) > -1) {
-						this.getObject(virtualGardenNameCleaned, (err, obj) => {
-							if (!obj) {
-								this.log.debug("Virtual garden does not exist, creating...");
-								this.setObjectNotExists(virtualGardenNameCleaned, {
-									type: "folder",
-									common: {
-										name: {
-											en: "Virtual garden for plants not belonging to any garden",
-											de: "Virtueller Garten für Pflanzen, die zu keinem Garten gehören",
-										},
-										icon: "/icons/garden.png",
-									},
-									native: {},
-								});
-								this.setStateOrCreate(`${virtualGardenNameCleaned}.garden_name`, this.config.virtualGardenName, {
-									common: {
-										type: "string",
-									},
-								});
-							}
-						});
-					}
-
-					// Create plant object
-					this.log.debug("Create plant-object if not exists");
-					this.setObjectNotExists(plantObjectID, {
-						type: "folder",
-						common: {
-							name: plant.nickname,
-							icon: "/icons/plant.png",
-						},
-						native: {},
-					});
-
-					// Create plant states
-					this.log.debug("Create states...");
-					this.setStatesOrCreate(plantObjectID, plant, statesDefinition.plant);
-
-					// Download Images if present
-					["thumb_path", "origin_path"].forEach(async (property) => {
-						if (plant[property] !== "") {
-							const filename = path.join("plant", `${plant["id"]}_${property.split("_")[0]}.jpg`);
-
-							const fileExists = await this.fileExistsAsync(this.name, filename);
-							if (fileExists) {
-								this.log.debug(`Skipped downloading file /${this.name}/${filename}`);
+						// Lookup for garden
+						if (plant.garden && plant.garden.id) {
+							const garden = data.gardens.find((g) => g.id === plant.garden.id);
+							if (garden === null) {
+								this.log.error(`Can't find defined garden for plant ${plant.nickname} (ID ${plant.id})`);
 								return;
 							}
-							this.downloadImage(plant[property], filename, resultLogin.token)
-								.then((filename) => {
-									this.setStateOrCreate(`${plantObjectID}.${property}_local`, filename, {
+							this.log.debug(`Belongs to garden ${JSON.stringify(garden)}`);
+							plantObjectID = `${this.cleanName(garden.garden_name)}.${this.cleanName(plant.nickname)}`;
+						}
+						//}else if(this.options.dataLayout == "flat"){
+						//	plantObjectID = this.cleanName(plant.nickname);
+						//}else{
+						//	this.log.error("Unknown value for option \"dataLayout\": " + JSON.stringify(this.options.dataLayout));
+						//	return;
+						//}
+
+						// Need to create virtual garden?
+						if (plantObjectID.indexOf(`${virtualGardenNameCleaned}.`) > -1) {
+							this.getObject(virtualGardenNameCleaned, (err, obj) => {
+								if (!obj) {
+									this.log.debug("Virtual garden does not exist, creating...");
+									this.setObjectNotExists(virtualGardenNameCleaned, {
+										type: "folder",
 										common: {
-											name: property,
+											name: {
+												en: "Virtual garden for plants not belonging to any garden",
+												de: "Virtueller Garten für Pflanzen, die zu keinem Garten gehören",
+											},
+											icon: "/icons/garden.png",
+										},
+										native: {},
+									});
+									this.setStateOrCreate(`${virtualGardenNameCleaned}.garden_name`, this.config.virtualGardenName, {
+										common: {
 											type: "string",
-											role: "url",
-											read: true,
-											write: false,
 										},
 									});
-								})
-								.catch((error) => {
-									this.log.error(error.message);
-								});
+								}
+							});
 						}
-					});
 
-					// Looking for sensor
-					if (plant.sensor !== null) {
-						const sensorObjectID = `${plantObjectID}.sensor`;
-						this.log.debug("Create sensor-object if not exists");
-						this.setObjectNotExists(sensorObjectID, {
-							type: "device",
+						// Create plant object
+						this.log.debug("Create plant-object if not exists");
+						this.setObjectNotExists(plantObjectID, {
+							type: "folder",
 							common: {
-								name: "Sensor",
-								icon: "/icons/sensor.png",
+								name: plant.nickname,
+								icon: "/icons/plant.png",
 							},
 							native: {},
 						});
 
-						this.setStatesOrCreate(sensorObjectID, plant.sensor, statesDefinition.sensor);
-					}
+						// Create plant states
+						this.log.debug("Create states...");
+						this.setStatesOrCreate(plantObjectID, plant, "plant");
 
-					// Looking for hub
-					if (plant.hub !== null) {
-						const hubObjectID = `${plantObjectID}.hub`;
-						this.log.debug("Create hub-object if not exists");
-						this.setObjectNotExists(hubObjectID, {
-							type: "device",
-							common: {
-								name: "Hub",
-								icon: "/icons/hub.png",
-							},
-							native: {},
-						});
+						// Download Images if present
+						await Promise.all(
+							["thumb_path", "origin_path"].map(async (property) => {
+								if (plant[property] !== "") {
+									const filename = path.join("plant", `${plant["id"]}_${property.split("_")[0]}.jpg`);
 
-						this.setStatesOrCreate(hubObjectID, plant.hub, statesDefinition.hub);
-					}
-				});
+									const fileExists = await this.fileExistsAsync(this.name, filename);
+									if (fileExists) {
+										this.log.debug(`Skipped downloading file /${this.name}/${filename}`);
+										return;
+									}
+									this.downloadImage(plant[property], filename, resultLogin.token)
+										.then((filename) => {
+											this.setStateOrCreate(`${plantObjectID}.${property}_local`, filename, {
+												common: {
+													name: property,
+													type: "string",
+													role: "url",
+													read: true,
+													write: false,
+												},
+											});
+										})
+										.catch((error) => {
+											this.log.error(error.message);
+										});
+								}
+							}),
+						);
 
-				this.setState("info.last_update", new Date().toLocaleString(), true);
+						// Looking for sensor
+						if (plant.sensor !== null) {
+							const sensorObjectID = `${plantObjectID}.sensor`;
+							this.log.debug("Create sensor-object if not exists");
+							this.setObjectNotExists(sensorObjectID, {
+								type: "device",
+								common: {
+									name: "Sensor",
+									icon: "/icons/sensor.png",
+								},
+								native: {},
+							});
+
+							this.setStatesOrCreate(sensorObjectID, plant.sensor, "sensor");
+						}
+
+						// Looking for hub
+						if (plant.hub !== null) {
+							const hubObjectID = `${plantObjectID}.hub`;
+							this.log.debug("Create hub-object if not exists");
+							this.setObjectNotExists(hubObjectID, {
+								type: "device",
+								common: {
+									name: "Hub",
+									icon: "/icons/hub.png",
+								},
+								native: {},
+							});
+
+							this.setStatesOrCreate(hubObjectID, plant.hub, "hub");
+						}
+					}),
+				);
+
+				await this.setState("info.last_update", new Date().toLocaleString(), true);
 
 				return true;
 			}
 			return true;
 		}
-		
-		if(resultLogin && resultLogin.shouldStop !== null){
+
+		if (resultLogin && resultLogin.shouldStop !== null) {
 			return !resultLogin.shouldStop;
 		}
-		
+
 		return false;
 	}
 
@@ -480,10 +540,13 @@ class Fyta extends utils.Adapter {
 	 *
 	 * @param strParentObjectID parent Object ID
 	 * @param obj object from api
-	 * @param arrStatesDefinition states definition to transform
+	 * @param stateType states type to transform
 	 */
-	setStatesOrCreate(strParentObjectID, obj, arrStatesDefinition) {
-		for (const [stateSourceObject, stateDefinition] of Object.entries(arrStatesDefinition)) {
+	setStatesOrCreate(strParentObjectID, obj, stateType) {
+		const statesToUse = statesDefinition[stateType];
+		const notificationBase = notificationRelevantStates[stateType];
+
+		for (const [stateSourceObject, stateDefinition] of Object.entries(statesToUse)) {
 			if (!(stateSourceObject in obj) && !("def" in stateDefinition)) {
 				this.log.warn(`There is not a property "${stateSourceObject}"`);
 				continue;
@@ -515,6 +578,15 @@ class Fyta extends utils.Adapter {
 					write: false,
 				},
 			});
+
+			const notificationMeta = notificationBase?.[stateSourceObject];
+			if (!!notificationMeta && notificationMeta.active && notificationMeta.filter(stateValue)) {
+				const category = notificationMeta.notification.category;
+				const { message, ...contextData } = notificationMeta.notification.template(obj);
+
+				// Discard promise, no need to await here.
+				const _1 = this.registerNotification("fyta", category, message, { contextData });
+			}
 		}
 	}
 
