@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "fyta",
-        "version": "0.1.5",
+        "version": "0.1.6",
         "news": {
+			"0.1.5": {
+                "en": "Use of the internal notificationsystem supplemented",
+                "de": "Verwendung des internen Notifizierungssystems ergänzt",
+                "ru": "Использование внутренней системы уведомлений",
+                "pt": "Uso do sistema de notificação interna suplementado",
+                "nl": "Gebruik van het aanvullende interne kennisgevingssysteem",
+                "fr": "Utilisation du système de notification interne complété",
+                "it": "Utilizzo del sistema di notifica interno integrato",
+                "es": "Utilización del sistema de notificación interna complementada",
+                "pl": "Uzupełnione stosowanie wewnętrznego systemu zgłaszania",
+                "uk": "Використання вбудованої системи сповіщення",
+                "zh-cn": "补充使用内部通知系统"
+			},
 			"0.1.5": {
                 "en": "Fix issue with image download",
                 "de": "Problem mit Bilderdownload behoben",
@@ -109,7 +122,7 @@
         },
         "platform": "Javascript/Node.js",
         "icon": "fyta.png",
-        "enabled": true,
+        "enabled": false,
         "extIcon": "https://raw.githubusercontent.com/muffin142/iobroker.fyta/main/admin/fyta.png",
         "readme": "https://github.com/muffin142/ioBroker.fyta/blob/main/README.md",
         "loglevel": "info",
@@ -137,38 +150,79 @@
         "email": "",
         "password": "",
         "virtualGardenName": "Ithilien",
-        "clearOnStartup": false
+        "clearOnStartup": false,
+		
+		"notificationsEnabled": true,
+		"notificationsPlantLight": true,
+		"notificationsPlantMoistureEnabled": true,
+		"notificationsPlantNutrients": true,
+		"notificationsPlantTemperature": true
+		
     },
+    "protectedNative": [
+        "password"
+    ],
+    "encryptedNative": [
+        "password"
+    ],
     "notifications": [
         {
             "scope": "fyta",
             "name": {
-                "en": "Fyta" 
+              "en": "Fyta",
+              "de": "Fyta",
+              "ru": "Fyta",
+              "pt": "Fyta",
+              "nl": "Fyta",
+              "fr": "Fyta",
+              "it": "Fyta",
+              "es": "Fyta",
+              "pl": "Fyta",
+              "uk": "Fyta",
+              "zh-cn": "Fyta"
             },
             "description": {
-                "en": "TODO"
+              "en": "Notifications about plants and devices",
+              "de": "Meldungen über Pflanzen und Geräte",
+              "ru": "Уведомления о растениях и устройствах",
+              "pt": "Notificações sobre plantas e dispositivos",
+              "nl": "Kennisgevingen over installaties en apparaten",
+              "fr": "Notifications concernant les installations et les dispositifs",
+              "it": "Notifiche su impianti e dispositivi",
+              "es": "Notificaciones sobre plantas y dispositivos",
+              "pl": "Powiadomienia o instalacjach i urządzeniach",
+              "uk": "Повідомлення про рослини та пристрої",
+              "zh-cn": "关于工厂和装置的通知"
             },
             "categories": [
                 {
-                    "category": "plantNotDoingGreat",
+                    "category": "checkPlant",
                     "name": {
-                        "en": "Check Plant"
+                      "en": "Check plant",
+                      "de": "Überprüfe deine Pflanze",
+                      "ru": "Проверить завод",
+                      "pt": "Verificação da planta",
+                      "nl": "Controle-installatie",
+                      "fr": "Vérifier l'installation",
+                      "it": "Impianto di controllo",
+                      "es": "Planta de control",
+                      "pl": "Zakład kontroli",
+                      "uk": "Перевірити завод",
+                      "zh-cn": "检查厂"
                     },
                     "severity": "alert",
                     "description": {
-                        "en": "A plant is not doing great."
-                    },
-                    "regex": [],
-                    "limit": 1
-                },
-                {
-                    "category": "humidityNotPerfect",
-                    "name": {
-                        "en": "Check Humidity"
-                    },
-                    "severity": "alert",
-                    "description": {
-                        "en": "The humidity of a plant needs to be checked."
+                      "en": "A plant is not doing great",
+                      "de": "Eine Pflanze geht es nicht gut",
+                      "ru": "Растение не делает ничего хорошего",
+                      "pt": "Uma planta não está fazendo grande",
+                      "nl": "Een plant doet het niet goed",
+                      "fr": "Une plante ne se porte pas bien",
+                      "it": "Una pianta non sta facendo grande",
+                      "es": "Una planta no está haciendo bien",
+                      "pl": "Roślina nie radzi sobie zbyt dobrze",
+                      "uk": "Рослина не робить",
+                      "zh-cn": "植物做得很好,没有用"
                     },
                     "regex": [],
                     "limit": 1
@@ -176,23 +230,37 @@
                 {
                     "category": "lowBattery",
                     "name": {
-                        "en": "Check battery status"
+                      "en": "Check battery status",
+                      "de": "Batteriestatus überprüfen",
+                      "ru": "Проверьте состояние батареи",
+                      "pt": "Verificar o estado da bateria",
+                      "nl": "Batterijstatus controleren",
+                      "fr": "Vérifier l'état de la batterie",
+                      "it": "Controlla lo stato della batteria",
+                      "es": "Estado de la batería",
+                      "pl": "Sprawdzić stan baterii",
+                      "uk": "Перевірити стан батареї",
+                      "zh-cn": "检查电池状态"
                     },
                     "severity": "notify",
                     "description": {
-                        "en": "The battery of a sensor needs to be replaced."
+                      "en": "The battery of a sensor needs to be replaced",
+                      "de": "Die Batterie eines Sensors muss ersetzt werden",
+                      "ru": "Аккумулятор датчика необходимо заменить",
+                      "pt": "A bateria de um sensor precisa ser substituída",
+                      "nl": "De batterij van een sensor moet worden vervangen",
+                      "fr": "La batterie d'un capteur doit être remplacée",
+                      "it": "La batteria di un sensore deve essere sostituita",
+                      "es": "La batería de un sensor debe ser reemplazada",
+                      "pl": "Bateria czujnika musi zostać wymieniona",
+                      "uk": "Акумулятор датчика необхідно замінити",
+                      "zh-cn": "传感器的电池需要更换"
                     },
                     "regex": [],
                     "limit": 1
                 }
             ]
         }
-    ],
-    "protectedNative": [
-        "password"
-    ],
-    "encryptedNative": [
-        "password"
     ],
     "objects": [
         {

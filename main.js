@@ -10,60 +10,7 @@ const utils = require("@iobroker/adapter-core");
 const axios = require("axios");
 const path = require("path");
 const statesDefinition = require("./lib/statesDefinition.js");
-
-const getDefaultPlantProperties = (plant) => ({
-	/* Properties should be aligned */
-	name: plant.nickname,
-	sName: plant.scientific_name,
-});
-
-const getDefaultDeviceProperties = (device) => ({
-	id: device.id,
-});
-
-const notificationRelevantStates = {
-	plant: {
-		moisture_status: {
-			active: true,
-			filter: (val) => val !== 3 || true /* ORed with true for testing -> Notification always sent */,
-			notification: {
-				category: "humidityNotPerfect",
-				template: (plant) => ({
-					...getDefaultPlantProperties(plant),
-					message: `Plant ${plant.nickname} is not having a perfect moisture status`,
-					actual: plant.moisture_status,
-				}),
-			},
-		},
-		isDoingGreat: {
-			active: true,
-			filter: (val) => val === false,
-			notification: {
-				category: "plantNotDoingGreat",
-				template: (plant) => ({
-					...getDefaultPlantProperties(plant),
-					message: `Plant ${plant.nickname} is not doing great`,
-					actual: plant.isDoingGreat,
-				}),
-			},
-		},
-	},
-	sensor: {
-		is_battery_low: {
-			active: true,
-			filter: (val) => val === true,
-			notification: {
-				category: "lowBattery",
-				template: (sensor) => ({
-					...getDefaultDeviceProperties(sensor),
-					message: `Sensor ${sensor.id} is low on battery`,
-					id: sensor.id,
-					actual: sensor.is_battery_low,
-				}),
-			},
-		},
-	},
-};
+const notificationsDefinition = require("./lib/notificationsDefinition.js");
 
 class Fyta extends utils.Adapter {
 	/**
@@ -82,6 +29,13 @@ class Fyta extends utils.Adapter {
 	 * Is called when databases are connected and adapter received configuration.
 	 */
 	async onReady() {
+		
+		//this.log.debug(JSON.stringify(this));
+		
+		
+		//this.log.info("Setting is " + this.config.notificationsEnabled); 
+		//this.log.info("Is Active: " + notificationsDefinition.plant.moisture_status[0].active(this));
+		
 		// Clear all Data?
 		if (this.config.clearOnStartup) {
 			this.log.info("Delete all states and files as defined by config");
@@ -442,7 +396,11 @@ class Fyta extends utils.Adapter {
 							native: {},
 						});
 
-						this.setStatesOrCreate(sensorObjectID, plant.sensor, "sensor");
+						const sensor = {
+							...plant.sensor,
+							plant: plant
+						};
+						this.setStatesOrCreate(sensorObjectID, sensor, "sensor");
 					}
 
 					// Looking for hub
@@ -458,7 +416,11 @@ class Fyta extends utils.Adapter {
 							native: {},
 						});
 
-						this.setStatesOrCreate(hubObjectID, plant.hub, "hub");
+						const hub = {
+							...plant.hub,
+							plant: plant
+						};
+						this.setStatesOrCreate(hubObjectID, hub, "hub");
 					}
 				});
 
@@ -534,11 +496,13 @@ class Fyta extends utils.Adapter {
 	 *
 	 * @param strParentObjectID parent Object ID
 	 * @param obj object from api
-	 * @param stateType states type to transform
+	 * @param string states type to transform ("hub", "plant", "garden", "sensor")
 	 */
 	setStatesOrCreate(strParentObjectID, obj, stateType) {
 		const statesToUse = statesDefinition[stateType];
-		const notificationBase = notificationRelevantStates[stateType];
+		const notificationBase = notificationsDefinition[stateType];
+		
+		this.log.debug("StateType is " + stateType);
 
 		for (const [stateSourceObject, stateDefinition] of Object.entries(statesToUse)) {
 			if (!(stateSourceObject in obj) && !("def" in stateDefinition)) {
@@ -547,7 +511,7 @@ class Fyta extends utils.Adapter {
 			}
 
 			const stateID = `${strParentObjectID}.${stateDefinition.name}`;
-			let stateValue = null;
+			let stateValue = null; 
 			if (stateSourceObject in obj) {
 				stateValue = obj[stateSourceObject];
 			}
@@ -555,9 +519,18 @@ class Fyta extends utils.Adapter {
 				stateValue = stateDefinition.def;
 			}
 
-			this.log.debug(`Set State ${stateID} to ${stateValue} (type ${stateDefinition.type})`);
+			this.log.debug(`Set state ${stateID} to ${stateValue} (type ${stateDefinition.type})`);
+			
+			// Retrieve old value if available
+			let statePrevValue = null;
+			this.getState(stateID, (err, state) => {
+				if (!err && state) {
+					statePrevValue = state.val; 
+				} 
+			});
+			this.log.debug(`Previous value of state ${stateID} is ${statePrevValue}`);
 
-			// Create state object
+			// Create opr set state object
 			this.setStateOrCreate(stateID, stateValue, {
 				common: {
 					...{
@@ -573,13 +546,21 @@ class Fyta extends utils.Adapter {
 				},
 			});
 
-			const notificationMeta = notificationBase?.[stateSourceObject];
-			if (!!notificationMeta && notificationMeta.active && notificationMeta.filter(stateValue)) {
-				const category = notificationMeta.notification.category;
-				const { message, ...contextData } = notificationMeta.notification.template(obj);
+			// Send notification if neccessary
+			if(statePrevValue !== stateValue){				
+				this.log.debug("Previous value !== current value, raising notification");
+				const notificationMetaArray = notificationBase?.[stateSourceObject];
+				if(!!notificationMetaArray){
+					notificationMetaArray.forEach(async (notificationMeta) => {
+						if (!!notificationMeta && notificationMeta.active(this) && notificationMeta.filter(stateValue)) {
+							const category = notificationMeta.notification.category;
+							const { message, ...contextData } = notificationMeta.notification.template(obj);
 
-				// Discard promise, no need to await here.
-				const _1 = this.registerNotification("fyta", category, message, { contextData });
+							// Discard promise, no need to await here.
+							const _1 = this.registerNotification("fyta", category, message, { contextData });
+						}
+					});
+				}
 			}
 		}
 	}
@@ -589,7 +570,7 @@ class Fyta extends utils.Adapter {
 	 *
 	 * @param stateID State ID
 	 * @param stateValue State Value
-	 * @param options	Option
+	 * @param options Option
 	 */
 	setStateOrCreate(stateID, stateValue, options) {
 		if (!options || !options.common || !options.common.type) {
