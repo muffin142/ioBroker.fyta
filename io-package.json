@@ -139,6 +139,55 @@
         "virtualGardenName": "Ithilien",
         "clearOnStartup": false
     },
+    "notifications": [
+        {
+            "scope": "fyta",
+            "name": {
+                "en": "Fyta" 
+            },
+            "description": {
+                "en": "TODO"
+            },
+            "categories": [
+                {
+                    "category": "plantNotDoingGreat",
+                    "name": {
+                        "en": "Check Plant"
+                    },
+                    "severity": "alert",
+                    "description": {
+                        "en": "A plant is not doing great."
+                    },
+                    "regex": [],
+                    "limit": 1
+                },
+                {
+                    "category": "humidityNotPerfect",
+                    "name": {
+                        "en": "Check Humidity"
+                    },
+                    "severity": "alert",
+                    "description": {
+                        "en": "The humidity of a plant needs to be checked."
+                    },
+                    "regex": [],
+                    "limit": 1
+                },
+                {
+                    "category": "lowBattery",
+                    "name": {
+                        "en": "Check battery status"
+                    },
+                    "severity": "notify",
+                    "description": {
+                        "en": "The battery of a sensor needs to be replaced."
+                    },
+                    "regex": [],
+                    "limit": 1
+                }
+            ]
+        }
+    ],
     "protectedNative": [
         "password"
     ],

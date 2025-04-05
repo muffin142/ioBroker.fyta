@@ -11,6 +11,60 @@ const axios = require("axios");
 const path = require("path");
 const statesDefinition = require("./lib/statesDefinition.js");
 
+const getDefaultPlantProperties = (plant) => ({
+	/* Properties should be aligned */
+	name: plant.nickname,
+	sName: plant.scientific_name,
+});
+
+const getDefaultDeviceProperties = (device) => ({
+	id: device.id,
+});
+
+const notificationRelevantStates = {
+	plant: {
+		moisture_status: {
+			active: true,
+			filter: (val) => val !== 3 || true /* ORed with true for testing -> Notification always sent */,
+			notification: {
+				category: "humidityNotPerfect",
+				template: (plant) => ({
+					...getDefaultPlantProperties(plant),
+					message: `Plant ${plant.nickname} is not having a perfect moisture status`,
+					actual: plant.moisture_status,
+				}),
+			},
+		},
+		isDoingGreat: {
+			active: true,
+			filter: (val) => val === false,
+			notification: {
+				category: "plantNotDoingGreat",
+				template: (plant) => ({
+					...getDefaultPlantProperties(plant),
+					message: `Plant ${plant.nickname} is not doing great`,
+					actual: plant.isDoingGreat,
+				}),
+			},
+		},
+	},
+	sensor: {
+		is_battery_low: {
+			active: true,
+			filter: (val) => val === true,
+			notification: {
+				category: "lowBattery",
+				template: (sensor) => ({
+					...getDefaultDeviceProperties(sensor),
+					message: `Sensor ${sensor.id} is low on battery`,
+					id: sensor.id,
+					actual: sensor.is_battery_low,
+				}),
+			},
+		},
+	},
+};
+
 class Fyta extends utils.Adapter {
 	/**
 	 * @param [options] options
@@ -176,13 +230,13 @@ class Fyta extends utils.Adapter {
 
 				return {
 					token: response.data.access_token,
-					shouldStop: false
+					shouldStop: false,
 				};
 			} else {
 				this.log.error("An error occured while logging into FYTA API (HTTP-Status ${response.status}).");
 			}
 		} catch (error) {
-			// handle error			
+			// handle error
 			if (/\b401\b/.test(error)) {
 				this.log.error("Login to FYTA API was rejected due to wrong Password. Please check config.");
 				shouldStop = true;
@@ -197,7 +251,7 @@ class Fyta extends utils.Adapter {
 		this.setState("info.connection", false, true);
 
 		return {
-			shouldStop: shouldStop
+			shouldStop: shouldStop,
 		};
 	}
 
@@ -274,7 +328,7 @@ class Fyta extends utils.Adapter {
 
 					// Create garden states
 					this.log.debug("Create states...");
-					this.setStatesOrCreate(gardenObjectID, garden, statesDefinition.garden);
+					this.setStatesOrCreate(gardenObjectID, garden, "garden");
 				});
 
 				//
@@ -345,7 +399,7 @@ class Fyta extends utils.Adapter {
 
 					// Create plant states
 					this.log.debug("Create states...");
-					this.setStatesOrCreate(plantObjectID, plant, statesDefinition.plant);
+					this.setStatesOrCreate(plantObjectID, plant, "plant");
 
 					// Download Images if present
 					["thumb_path", "origin_path"].forEach(async (property) => {
@@ -388,7 +442,7 @@ class Fyta extends utils.Adapter {
 							native: {},
 						});
 
-						this.setStatesOrCreate(sensorObjectID, plant.sensor, statesDefinition.sensor);
+						this.setStatesOrCreate(sensorObjectID, plant.sensor, "sensor");
 					}
 
 					// Looking for hub
@@ -404,7 +458,7 @@ class Fyta extends utils.Adapter {
 							native: {},
 						});
 
-						this.setStatesOrCreate(hubObjectID, plant.hub, statesDefinition.hub);
+						this.setStatesOrCreate(hubObjectID, plant.hub, "hub");
 					}
 				});
 
@@ -414,11 +468,11 @@ class Fyta extends utils.Adapter {
 			}
 			return true;
 		}
-		
-		if(resultLogin && resultLogin.shouldStop !== null){
+
+		if (resultLogin && resultLogin.shouldStop !== null) {
 			return !resultLogin.shouldStop;
 		}
-		
+
 		return false;
 	}
 
@@ -480,10 +534,13 @@ class Fyta extends utils.Adapter {
 	 *
 	 * @param strParentObjectID parent Object ID
 	 * @param obj object from api
-	 * @param arrStatesDefinition states definition to transform
+	 * @param stateType states type to transform
 	 */
-	setStatesOrCreate(strParentObjectID, obj, arrStatesDefinition) {
-		for (const [stateSourceObject, stateDefinition] of Object.entries(arrStatesDefinition)) {
+	setStatesOrCreate(strParentObjectID, obj, stateType) {
+		const statesToUse = statesDefinition[stateType];
+		const notificationBase = notificationRelevantStates[stateType];
+
+		for (const [stateSourceObject, stateDefinition] of Object.entries(statesToUse)) {
 			if (!(stateSourceObject in obj) && !("def" in stateDefinition)) {
 				this.log.warn(`There is not a property "${stateSourceObject}"`);
 				continue;
@@ -515,6 +572,15 @@ class Fyta extends utils.Adapter {
 					write: false,
 				},
 			});
+
+			const notificationMeta = notificationBase?.[stateSourceObject];
+			if (!!notificationMeta && notificationMeta.active && notificationMeta.filter(stateValue)) {
+				const category = notificationMeta.notification.category;
+				const { message, ...contextData } = notificationMeta.notification.template(obj);
+
+				// Discard promise, no need to await here.
+				const _1 = this.registerNotification("fyta", category, message, { contextData });
+			}
 		}
 	}
 
