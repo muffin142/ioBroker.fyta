@@ -1,47 +1,143 @@
 {
-	"i18n": true,
-	"type": "panel",
-	"items": {
-		"email": {
-			"type": "text",
-			"label": "eMail",
-			"newLine": true,
-			"xs": 12,
-			"sm": 12,
-			"md": 6,
-			"lg": 4,
-			"xl": 4
-		},
-		"password": {
-			"type": "password",
-			"label": "Password",
-			"newLine": true,
-			"xs": 12,
-			"sm": 12,
-			"md": 6,
-			"lg": 4,
-			"xl": 4
-		},
-		"virtualGardenName": {
-			"type": "text",
-			"label": "Name for virtual garden",
-			"newLine": true,
-			"help": "Garden that plants are assigned to when they dont belong to any other garden",
-			"xs": 12,
-			"sm": 12,
-			"md": 6,
-			"lg": 4,
-			"xl": 4
-		},
-		"clearOnStartup": {
-			"newLine": true,
-			"type": "checkbox",
-			"label": "Clear all data on next start",       
-			"xs": 12,
-			"sm": 12,
-			"md": 6,
-			"lg": 4,
-			"xl": 4
-		}
-	}
+    "i18n": true,
+    "type": "tabs",
+    "items": {
+        "settingsCommon": {
+            "type": "panel",
+            "label": "Common settings",
+            "items": {
+                "email": {
+                    "type": "text",
+                    "label": "eMail",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+                "password": {
+                    "type": "password",
+                    "label": "Password",
+                    "newLine": true,
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+                "virtualGardenName": {
+                    "type": "text",
+                    "label": "Name for virtual garden",
+                    "newLine": true,
+                    "help": "Garden that plants are assigned to when they dont belong to any other garden",
+                    "xs": 12, 
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+                "clearOnStartup": {
+                    "newLine": true,
+                    "type": "checkbox",
+                    "label": "Clear all data on next start",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                }
+            }
+        },
+        "settingsNotifications": {
+            "type": "panel",
+            "label": "Notifications",
+            "items": {
+                "notificationsEnabled": {
+                    "newLine": true,
+                    "type": "checkbox",
+                    "label": "Use internal notification system",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+				"_headerPlants": {
+                    "newLine": true,
+                    "type": "header",
+					"size": "3",
+                    "label": "For which plant data points would you like to receive notifications?",
+					"hidden": "!data.notificationsEnabled",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },	
+				"notificationsPlantLight": {
+                    "type": "checkbox",
+                    "label": "Light",
+					"hidden": "!data.notificationsEnabled",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 3,
+                    "xl": 3
+                },			
+				"notificationsPlantMoistureEnabled": {
+                    "type": "checkbox",
+                    "label": "Moisture",
+					"hidden": "!data.notificationsEnabled",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 3,
+                    "xl": 3
+                },
+				"notificationsPlantNutrients": {
+                    "type": "checkbox",
+                    "label": "Nutrients",
+					"hidden": "!data.notificationsEnabled",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 3,
+                    "xl": 3
+                },
+				"notificationsPlantTemperature": {
+                    "type": "checkbox",
+                    "label": "Temperature",
+					"hidden": "!data.notificationsEnabled",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 3,
+                    "xl": 3
+                },
+				"_headerSensors": {
+                    "newLine": true,
+                    "type": "header",
+					"size": "3",
+                    "label": "For which sensor data points would you like to receive notifications?",
+					"hidden": "!data.notificationsEnabled",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
+				"notificationsSensorBatteryLow": {
+                    "type": "checkbox",
+                    "label": "Battery low",
+					"hidden": "!data.notificationsEnabled",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 3,
+                    "xl": 3
+                }		
+            }
+        }
+    }
 }
