@@ -1,0 +1,11 @@
+{
+    "It is too bright for %s": "Это слишком ярко для %s",
+    "It is too dark for %s": "Это слишком темно для %s",
+    "%s is overwatered": "%s переоседается",
+    "%s has too little water": "%s имеет слишком мало воды",
+    "%s is overfertilized": "%s чрезмерная",
+    "%s must be fertilized": "%s должны быть оплодотворены",
+    "%s is too warm": "%s слишком тепло",
+    "%s is too cold": "%s слишком холодно",
+    "Sensor on %s (ID %s) is low on battery": "Датчик на %s (id %s) низкий батарея"
+}

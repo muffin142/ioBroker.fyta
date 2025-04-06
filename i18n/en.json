@@ -1,12 +1,11 @@
 {
-	"notificationPlantLightTooHigh": "It is too bright for %s",
-	"notificationPlantLightTooLow": "It is too dark for %s",
-    "notificationPlantMoistureTooHigh": "%s is overwatered",
-	"notificationPlantMoistureTooLow": "%s has too little water",
-	"notificationPlantNutrientsTooHigh": "%s is overfertilized",
-	"notificationPlantNutrientsTooLow": "%s must be fertilized",
-	"notificationPlantTemperatureTooHigh": "%s is too warm",
-	"notificationPlantTemperatureTooLow": "%s is too cold",
-
-	"notificationSensorBatteryLow": "Sensor on %s (ID %s) is low on battery"
+	"It is too bright for %s": "It is too bright for %s",
+	"It is too dark for %s": "It is too dark for %s",
+	"%s is overwatered": "%s is overwatered",
+	"%s has too little water": "%s has too little water",
+	"%s is overfertilized": "%s is overfertilized",
+	"%s must be fertilized": "%s must be fertilized",
+	"%s is too warm": "%s is too warm",
+	"%s is too cold": "%s is too cold",
+	"Sensor on %s (ID %s) is low on battery": "Sensor on %s (ID %s) is low on battery"
 }

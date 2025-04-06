@@ -1,0 +1,11 @@
+{
+    "It is too bright for %s": "Il est trop brillant pour% s",
+    "It is too dark for %s": "Il est trop sombre pour% s",
+    "%s is overwatered": "% s est trop d'eau",
+    "%s has too little water": "% s a trop peu d'eau",
+    "%s is overfertilized": "% s est trop fertilisé",
+    "%s must be fertilized": "% s doit être fertilisé",
+    "%s is too warm": "% s est trop chaud",
+    "%s is too cold": "% s est trop froid",
+    "Sensor on %s (ID %s) is low on battery": "Le capteur sur% s (ID% s) est faible sur la batterie"
+}

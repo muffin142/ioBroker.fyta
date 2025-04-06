@@ -1,0 +1,11 @@
+{
+    "It is too bright for %s": "Це занадто яскраво для %s",
+    "It is too dark for %s": "Занадто темно для %s",
+    "%s is overwatered": "%s переопрацьовано",
+    "%s has too little water": "%S має занадто мало води",
+    "%s is overfertilized": "%S",
+    "%s must be fertilized": "%s повинні бути запліднені",
+    "%s is too warm": "%s занадто теплий",
+    "%s is too cold": "%s занадто холодно",
+    "Sensor on %s (ID %s) is low on battery": "Датчик на %s (id %s) низький на акумулятор"
+}

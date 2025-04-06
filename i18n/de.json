@@ -7,6 +7,5 @@
 	"notificationPlantNutrientsTooLow": "%s muss gedüngt oder umgetopft werden",
 	"notificationPlantTemperatureTooHigh": "%s ist es zu warm",
 	"notificationPlantTemperatureTooLow": "%s ist es zu kalt",
-
 	"notificationSensorBatteryLow": "Die Batterie des Sonsors von %s (ID %s) ist fast leer"
 }
