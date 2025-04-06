@@ -1,4 +1,4 @@
-{
+{ 
   "name": "iobroker.fyta",
   "version": "0.1.5",
   "description": "Adapter to connect ioBroker to FYTA plant sensors",
