@@ -41,7 +41,12 @@ class Fyta extends utils.Adapter {
 		this.registerNotification("fyta","checkPlant", template.message);
 		this.log.info("Send.")
 
-		await utils.I18n.init(__dirname + "/i18n", this);  
+		const fs = require('fs');
+		const items = fs.readdirSync(__dirname);
+		this.log.info(JSON.stringify(items))
+
+
+		await utils.I18n.init(__dirname, this);
 		this.log.info("Translation: " + utils.I18n.translate("notificationPlantLightTooBright"));
 
 		return;
