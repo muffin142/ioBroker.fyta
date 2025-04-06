@@ -30,27 +30,8 @@ class Fyta extends utils.Adapter {
 	 */
 	async onReady() {
 		
+		//i18n init
 		await utils.I18n.init(__dirname, this);
-		//this.log.debug(JSON.stringify(this));
-		
-		
-		//this.log.info("Setting is " + this.config.notificationsEnabled); 
-		//this.log.info("Is Active: " + notificationsDefinition.plant.moisture_status[0].active(this));
-
-		const plant = {nickname: "Mickey", scientific_name: "Mickus Mausus"};
-		const template = notificationsDefinition.plant.light_status[0].notification.template(plant);
-		//this.registerNotification("fyta","checkPlant", template.message);
-		this.log.info("Send: " + template.message) ;
-
-		/*
-		const fs = require('fs');
-		const items = fs.readdirSync(__dirname);
-		this.log.info(JSON.stringify(items))
-
-
-		this.log.info("Translation: " + utils.I18n.translate("notificationPlantLightTooBright", plant.nickname));
-		*/
-		return;
 		
 		// Clear all Data?
 		if (this.config.clearOnStartup) {
