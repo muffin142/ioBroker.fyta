@@ -10,7 +10,6 @@ const utils = require("@iobroker/adapter-core");
 const axios = require("axios");
 const path = require("path");
 const statesDefinition = require("./lib/statesDefinition.js");
-const notificationsDefinition = require("./lib/notificationsDefinition.js");
 
 class Fyta extends utils.Adapter {
 	/**
