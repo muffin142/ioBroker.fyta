@@ -3,18 +3,18 @@
         "name": "fyta",
         "version": "0.1.5",
         "news": {			
-			"0.1.5": {
+            "0.1.5": {
                 "en": "Fix issue with image download",
                 "de": "Problem mit Bilderdownload behoben",
                 "ru": "Исправление проблемы с загрузкой изображений",
-				"pt": "Corrigir problema com download de imagem",
-				"nl": "Fix probleem met afbeelding download",
-				"fr": "Correction de problème avec téléchargement d'image",
-				"it": "Risolvere il problema con il download dell'immagine",
-				"es": "Edición de fijación con descarga de imagen",
-				"pl": "Napraw problem z pobieraniem obrazu",
-				"uk": "Виправлення проблеми з завантаженням зображень",
-				"zh-cn": "用图像下载处理问题"
+                "pt": "Corrigir problema com download de imagem",
+                "nl": "Fix probleem met afbeelding download",
+                "fr": "Correction de problème avec téléchargement d'image",
+                "it": "Risolvere il problema con il download dell'immagine",
+                "es": "Edición de fijación con descarga de imagen",
+                "pl": "Napraw problem z pobieraniem obrazu",
+                "uk": "Виправлення проблеми з завантаженням зображень",
+                "zh-cn": "用图像下载处理问题"
 			},
             "0.1.4": {
                 "en": "minor changes due to publishing to ioBroker.repository:latest",
@@ -137,14 +137,12 @@
         "email": "",
         "password": "",
         "virtualGardenName": "Ithilien",
-        "clearOnStartup": false,
-		
-		"notificationsEnabled": true,
-		"notificationsPlantLight": true,
-		"notificationsPlantMoistureEnabled": true,
-		"notificationsPlantNutrients": true,
-		"notificationsPlantTemperature": true
-		
+        "clearOnStartup": false,		
+        "notificationsEnabled": true,
+        "notificationsPlantLight": true,
+        "notificationsPlantMoistureEnabled": true,
+        "notificationsPlantNutrients": true,
+        "notificationsPlantTemperature": true		
     },
     "protectedNative": [
         "password"
