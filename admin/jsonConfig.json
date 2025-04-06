@@ -63,8 +63,6 @@
                     "lg": 4,
                     "xl": 4
                 },
-				
-				// Plants
 				"_headerPlants": {
                     "newLine": true,
                     "type": "header",
@@ -117,8 +115,6 @@
                     "lg": 3,
                     "xl": 3
                 },
-				
-				// Devices
 				"_headerSensors": {
                     "newLine": true,
                     "type": "header",
