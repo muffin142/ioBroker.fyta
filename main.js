@@ -64,8 +64,9 @@ class Fyta extends utils.Adapter {
 				const files = await this.readDirAsync(this.name, "plant");
 				for (const file of files) {
 					const filename = path.join("plant", file.file);
-					await this.delFile(this.name, filename);
-					this.log.debug(`Deleted file: ${filename}`);
+					await this.delFile(this.name, filename, () => {
+						this.log.debug(`Deleted file: ${filename}`);
+					});
 				}
 				this.log.info("All files deleted successfully");
 			} catch (err) {
@@ -395,11 +396,7 @@ class Fyta extends utils.Adapter {
 							native: {},
 						});
 
-						const sensor = {
-							...plant.sensor,
-							plant: plant
-						};
-						this.setStatesOrCreate(sensorObjectID, sensor, "sensor");
+						this.setStatesOrCreate(sensorObjectID, plant.sensor, "sensor");
 					}
 
 					// Looking for hub
@@ -415,11 +412,7 @@ class Fyta extends utils.Adapter {
 							native: {},
 						});
 
-						const hub = {
-							...plant.hub,
-							plant: plant
-						};
-						this.setStatesOrCreate(hubObjectID, hub, "hub");
+						this.setStatesOrCreate(hubObjectID, plant.hub, "hub");
 					}
 				});
 
@@ -499,7 +492,6 @@ class Fyta extends utils.Adapter {
 	 */
 	setStatesOrCreate(strParentObjectID, obj, stateType) {
 		const statesToUse = statesDefinition[stateType];
-		const notificationBase = notificationsDefinition[stateType];
 		
 		this.log.debug("StateType is " + stateType);
 
@@ -544,23 +536,6 @@ class Fyta extends utils.Adapter {
 					write: false,
 				},
 			});
-
-			// Send notification if neccessary
-			if(statePrevValue !== stateValue){				
-				this.log.debug("Previous value !== current value, raising notification");
-				const notificationMetaArray = notificationBase?.[stateSourceObject];
-				if(!!notificationMetaArray){
-					notificationMetaArray.forEach(async (notificationMeta) => {
-						if (!!notificationMeta && notificationMeta.active(this) && notificationMeta.filter(stateValue)) {
-							const category = notificationMeta.notification.category;
-							const { message, ...contextData } = notificationMeta.notification.template(obj);
-
-							// Discard promise, no need to await here.
-							const _1 = this.registerNotification("fyta", category, message, { contextData });
-						}
-					});
-				}
-			}
 		}
 	}
 
