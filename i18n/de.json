@@ -1,0 +1,12 @@
+{
+	"notificationPlantLightTooHigh": "%s ist es zu hell",
+	"notificationPlantLightTooLow": "%s ist es zu dunkel",
+    "notificationPlantMoistureTooHigh": "%s ist überwässert",
+	"notificationPlantMoistureTooLow": "%shat zu wenig Wasser",
+	"notificationPlantNutrientsTooHigh": "%s ist überdüngt",
+	"notificationPlantNutrientsTooLow": "%s muss gedüngt oder umgetopft werden",
+	"notificationPlantTemperatureTooHigh": "%s ist es zu warm",
+	"notificationPlantTemperatureTooLow": "%s ist es zu kalt",
+
+	"notificationSensorBatteryLow": "Die Batterie des Sonsors von %s (ID %s) ist fast leer"
+}

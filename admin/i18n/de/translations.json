@@ -1,7 +1,17 @@
 {
+    "Common settings": "Allgemeine Einstellungen",
     "eMail": "E-Mail-Adresse",
     "Password": "Passwort",
     "Name for virtual garden": "Name für virtuellen Garten",
     "Clear all data on next start": "Alle Daten beim nächsten Start löschen",
-    "Garden that plants are assigned to when they dont belong to any other garden": "Garten, dem Pflanzen zugeordnet werden, wenn sie nicht zu einem anderen Garten gehören"
+    "Garden that plants are assigned to when they dont belong to any other garden": "Garten, dem Pflanzen zugeordnet werden, wenn sie nicht zu einem anderen Garten gehören",
+    "Notifications": "Benachrichtigungen",
+    "Use internal notification system": "Verwende das interne Banchachrigungssystem",
+    "For which plant data points would you like to receive notifications?": "Für welche Datenpunkte der Pflanzen sollen Benachrichtungen gesendet werden?",
+    "Light": "Licht",
+    "Moisture": "Wasser",
+    "Nutrients": "Düngung",
+    "Temperature": "Temperatur",
+    "For which sensor data points would you like to receive notifications?": "Für welche Datenpunkte der Sensoren sollen Benachrichtungen gesendet werden?",
+    "Battery low": "Batterie schwach"
 }

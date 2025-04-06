@@ -1,3 +1,12 @@
 {
-	"notificationPlantLightTooBright": "Plant ${plant.nickname} is too bright"
+	"notificationPlantLightTooHigh": "It is too bright for %s",
+	"notificationPlantLightTooLow": "It is too dark for %s",
+    "notificationPlantMoistureTooHigh": "%s is overwatered",
+	"notificationPlantMoistureTooLow": "%s has too little water",
+	"notificationPlantNutrientsTooHigh": "%s is overfertilized",
+	"notificationPlantNutrientsTooLow": "%s must be fertilized",
+	"notificationPlantTemperatureTooHigh": "%s is too warm",
+	"notificationPlantTemperatureTooLow": "%s is too cold",
+
+	"notificationSensorBatteryLow": "Sensor on %s (ID %s) is low on battery"
 }

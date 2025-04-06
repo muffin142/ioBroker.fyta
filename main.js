@@ -30,6 +30,7 @@ class Fyta extends utils.Adapter {
 	 */
 	async onReady() {
 		
+		await utils.I18n.init(__dirname, this);
 		//this.log.debug(JSON.stringify(this));
 		
 		
@@ -37,18 +38,18 @@ class Fyta extends utils.Adapter {
 		//this.log.info("Is Active: " + notificationsDefinition.plant.moisture_status[0].active(this));
 
 		const plant = {nickname: "Mickey", scientific_name: "Mickus Mausus"};
-		const template = notificationsDefinition.plant.light_status[0].notification.template(plant, this);
-		this.registerNotification("fyta","checkPlant", template.message);
-		this.log.info("Send.")
+		const template = notificationsDefinition.plant.light_status[0].notification.template(plant);
+		//this.registerNotification("fyta","checkPlant", template.message);
+		this.log.info("Send: " + template.message) ;
 
+		/*
 		const fs = require('fs');
 		const items = fs.readdirSync(__dirname);
 		this.log.info(JSON.stringify(items))
 
 
-		await utils.I18n.init(__dirname, this);
-		this.log.info("Translation: " + utils.I18n.translate("notificationPlantLightTooBright"));
-
+		this.log.info("Translation: " + utils.I18n.translate("notificationPlantLightTooBright", plant.nickname));
+		*/
 		return;
 		
 		// Clear all Data?
