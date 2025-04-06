@@ -122,7 +122,7 @@
         },
         "platform": "Javascript/Node.js",
         "icon": "fyta.png",
-        "enabled": false,
+        "enabled": true,
         "extIcon": "https://raw.githubusercontent.com/muffin142/iobroker.fyta/main/admin/fyta.png",
         "readme": "https://github.com/muffin142/ioBroker.fyta/blob/main/README.md",
         "loglevel": "info",

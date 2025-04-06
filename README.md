@@ -23,7 +23,7 @@ Sensors can be purchased an the [FYTA Shop](https://fyta.de/collections/all/prod
 -->
 
 ### 0.1.6 (work in progress)
--   fix token handling when downloading plant images
+-   Use of the internal notificationsystem supplementeds
 
 ### 0.1.5 (2025-03-23)
 -   fix token handling when downloading plant images
