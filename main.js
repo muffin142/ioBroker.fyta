@@ -35,6 +35,16 @@ class Fyta extends utils.Adapter {
 		
 		//this.log.info("Setting is " + this.config.notificationsEnabled); 
 		//this.log.info("Is Active: " + notificationsDefinition.plant.moisture_status[0].active(this));
+
+		const plant = {nickname: "Mickey", scientific_name: "Mickus Mausus"};
+		const template = notificationsDefinition.plant.light_status[0].notification.template(plant, this);
+		this.registerNotification("fyta","checkPlant", template.message);
+		this.log.info("Send.")
+
+		await utils.I18n.init(__dirname + "/i18n", this);  
+		this.log.info("Translation: " + utils.I18n.translate("notificationPlantLightTooBright"));
+
+		return;
 		
 		// Clear all Data?
 		if (this.config.clearOnStartup) {
@@ -65,8 +75,9 @@ class Fyta extends utils.Adapter {
 				const files = await this.readDirAsync(this.name, "plant");
 				for (const file of files) {
 					const filename = path.join("plant", file.file);
-					await this.delFile(this.name, filename);
-					this.log.debug(`Deleted file: ${filename}`);
+					this.delFile(this.name, filename, () => {						
+						this.log.debug(`Deleted file: ${filename}`);
+					});
 				}
 				this.log.info("All files deleted successfully");
 			} catch (err) {

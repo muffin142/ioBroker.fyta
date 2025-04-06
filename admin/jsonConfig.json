@@ -63,13 +63,11 @@
                     "lg": 4,
                     "xl": 4
                 },
-				
-				// Plants
 				"_headerPlants": {
                     "newLine": true,
                     "type": "header",
-					"size": "3",
-                    "label": "For which plant data points would you like to receive notifications?",
+					"size": 3,
+                    "text": "For which plant data points would you like to receive notifications?",
 					"hidden": "!data.notificationsEnabled",
                     "xs": 12,
                     "sm": 12,
@@ -117,13 +115,11 @@
                     "lg": 3,
                     "xl": 3
                 },
-				
-				// Devices
 				"_headerSensors": {
                     "newLine": true,
                     "type": "header",
-					"size": "3",
-                    "label": "For which sensor data points would you like to receive notifications?",
+					"size": 3,
+                    "text": "For which sensor data points would you like to receive notifications?",
 					"hidden": "!data.notificationsEnabled",
                     "xs": 12,
                     "sm": 12,
