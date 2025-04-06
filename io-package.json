@@ -1,21 +1,60 @@
 {
     "common": {
         "name": "fyta",
-        "version": "0.1.3",
+        "version": "0.1.6",
         "news": {
-			"0.1.3": {
-				"en": "minor changes due to release process",
-				"de": "Kleine Anpassungen im zuge des Freigabeprozesses",
-				"ru": "незначительные изменения из-за процесса выпуска",
-				"pt": "pequenas alterações devido ao processo de lançamento",
-				"nl": "kleine wijzigingen als gevolg van het releaseproces",
-				"fr": "changements mineurs dus au processus de libération",
-				"it": "cambiamenti minori dovuti al processo di rilascio",
-				"es": "cambios menores debido al proceso de liberación",
-				"pl": "drobne zmiany spowodowane procesem wydania",
-				"uk": "незначні зміни у процесі релізу",
-				"zh-cn": "由于发布程序造成的小改动"
+			"0.1.6": {
+                "en": "Use of the internal notificationsystem supplemented",
+                "de": "Verwendung des internen Notifizierungssystems ergänzt",
+                "ru": "Использование внутренней системы уведомлений",
+                "pt": "Uso do sistema de notificação interna suplementado",
+                "nl": "Gebruik van het aanvullende interne kennisgevingssysteem",
+                "fr": "Utilisation du système de notification interne complété",
+                "it": "Utilizzo del sistema di notifica interno integrato",
+                "es": "Utilización del sistema de notificación interna complementada",
+                "pl": "Uzupełnione stosowanie wewnętrznego systemu zgłaszania",
+                "uk": "Використання вбудованої системи сповіщення",
+                "zh-cn": "补充使用内部通知系统"
 			},
+			"0.1.5": {
+                "en": "Fix issue with image download",
+                "de": "Problem mit Bilderdownload behoben",
+                "ru": "Исправление проблемы с загрузкой изображений",
+				"pt": "Corrigir problema com download de imagem",
+				"nl": "Fix probleem met afbeelding download",
+				"fr": "Correction de problème avec téléchargement d'image",
+				"it": "Risolvere il problema con il download dell'immagine",
+				"es": "Edición de fijación con descarga de imagen",
+				"pl": "Napraw problem z pobieraniem obrazu",
+				"uk": "Виправлення проблеми з завантаженням зображень",
+				"zh-cn": "用图像下载处理问题"
+			},
+            "0.1.4": {
+                "en": "minor changes due to publishing to ioBroker.repository:latest",
+                "de": "Kleine Anpassungen für die veröffentlichung in ioBroker.repository:latest",
+                "ru": "незначительные изменения в связи с публикацией на ioBroker.repository:latest",
+                "pt": "pequenas alterações devido à publicação no ioBroker.repositório:mais tarde",
+                "nl": "kleine wijzigingen als gevolg van publicatie aan ioBroker.repository: laatste",
+                "fr": "modifications mineures dues à la publication à ioBroker.repository:latest",
+                "it": "modifiche minori dovute alla pubblicazione a ioBroker.repository:latest",
+                "es": "cambios menores debido a la publicación a ioBroker.repository:latest",
+                "pl": "drobne zmiany spowodowane publikacją do jOBroker.repository: najnowszy",
+                "uk": "незначні зміни у зв’язку з виданням ioBroker.repository:latest",
+                "zh-cn": "由于发布到 ioBroker.resitory:latest 导致的小变化"
+            },
+            "0.1.3": {
+                "en": "minor changes due to release process",
+                "de": "Kleine Anpassungen im zuge des Freigabeprozesses",
+                "ru": "незначительные изменения из-за процесса выпуска",
+                "pt": "pequenas alterações devido ao processo de lançamento",
+                "nl": "kleine wijzigingen als gevolg van het releaseproces",
+                "fr": "changements mineurs dus au processus de libération",
+                "it": "cambiamenti minori dovuti al processo di rilascio",
+                "es": "cambios menores debido al proceso de liberación",
+                "pl": "drobne zmiany spowodowane procesem wydania",
+                "uk": "незначні зміни у процесі релізу",
+                "zh-cn": "由于发布程序造成的小改动"
+            },
             "0.1.2": {
                 "en": "minor changes to align with requirements of ioBroker-Adapter-Checker",
                 "de": "Kleinere Änderungen zur Anpassung an die Anforderungen des ioBroker-Adapter-Checker",
@@ -83,7 +122,7 @@
         },
         "platform": "Javascript/Node.js",
         "icon": "fyta.png",
-        "enabled": true,
+        "enabled": false,
         "extIcon": "https://raw.githubusercontent.com/muffin142/iobroker.fyta/main/admin/fyta.png",
         "readme": "https://github.com/muffin142/ioBroker.fyta/blob/main/README.md",
         "loglevel": "info",
@@ -103,7 +142,7 @@
         ],
         "globalDependencies": [
             {
-                "admin": ">=7.0.0"
+                "admin": ">=7.4.10"
             }
         ]
     },
@@ -111,7 +150,14 @@
         "email": "",
         "password": "",
         "virtualGardenName": "Ithilien",
-        "clearOnStartup": false
+        "clearOnStartup": false,
+		
+		"notificationsEnabled": true,
+		"notificationsPlantLight": true,
+		"notificationsPlantMoistureEnabled": true,
+		"notificationsPlantNutrients": true,
+		"notificationsPlantTemperature": true
+		
     },
     "protectedNative": [
         "password"
@@ -119,24 +165,121 @@
     "encryptedNative": [
         "password"
     ],
+    "notifications": [
+        {
+            "scope": "fyta",
+            "name": {
+              "en": "Fyta",
+              "de": "Fyta",
+              "ru": "Fyta",
+              "pt": "Fyta",
+              "nl": "Fyta",
+              "fr": "Fyta",
+              "it": "Fyta",
+              "es": "Fyta",
+              "pl": "Fyta",
+              "uk": "Fyta",
+              "zh-cn": "Fyta"
+            },
+            "description": {
+              "en": "Notifications about plants and devices",
+              "de": "Meldungen über Pflanzen und Geräte",
+              "ru": "Уведомления о растениях и устройствах",
+              "pt": "Notificações sobre plantas e dispositivos",
+              "nl": "Kennisgevingen over installaties en apparaten",
+              "fr": "Notifications concernant les installations et les dispositifs",
+              "it": "Notifiche su impianti e dispositivi",
+              "es": "Notificaciones sobre plantas y dispositivos",
+              "pl": "Powiadomienia o instalacjach i urządzeniach",
+              "uk": "Повідомлення про рослини та пристрої",
+              "zh-cn": "关于工厂和装置的通知"
+            },
+            "categories": [
+                {
+                    "category": "checkPlant",
+                    "name": {
+                      "en": "Check plant",
+                      "de": "Überprüfe deine Pflanze",
+                      "ru": "Проверить завод",
+                      "pt": "Verificação da planta",
+                      "nl": "Controle-installatie",
+                      "fr": "Vérifier l'installation",
+                      "it": "Impianto di controllo",
+                      "es": "Planta de control",
+                      "pl": "Zakład kontroli",
+                      "uk": "Перевірити завод",
+                      "zh-cn": "检查厂"
+                    },
+                    "severity": "alert",
+                    "description": {
+                      "en": "A plant is not doing great",
+                      "de": "Eine Pflanze geht es nicht gut",
+                      "ru": "Растение не делает ничего хорошего",
+                      "pt": "Uma planta não está fazendo grande",
+                      "nl": "Een plant doet het niet goed",
+                      "fr": "Une plante ne se porte pas bien",
+                      "it": "Una pianta non sta facendo grande",
+                      "es": "Una planta no está haciendo bien",
+                      "pl": "Roślina nie radzi sobie zbyt dobrze",
+                      "uk": "Рослина не робить",
+                      "zh-cn": "植物做得很好,没有用"
+                    },
+                    "regex": [],
+                    "limit": 1
+                },
+                {
+                    "category": "lowBattery",
+                    "name": {
+                      "en": "Check battery status",
+                      "de": "Batteriestatus überprüfen",
+                      "ru": "Проверьте состояние батареи",
+                      "pt": "Verificar o estado da bateria",
+                      "nl": "Batterijstatus controleren",
+                      "fr": "Vérifier l'état de la batterie",
+                      "it": "Controlla lo stato della batteria",
+                      "es": "Estado de la batería",
+                      "pl": "Sprawdzić stan baterii",
+                      "uk": "Перевірити стан батареї",
+                      "zh-cn": "检查电池状态"
+                    },
+                    "severity": "notify",
+                    "description": {
+                      "en": "The battery of a sensor needs to be replaced",
+                      "de": "Die Batterie eines Sensors muss ersetzt werden",
+                      "ru": "Аккумулятор датчика необходимо заменить",
+                      "pt": "A bateria de um sensor precisa ser substituída",
+                      "nl": "De batterij van een sensor moet worden vervangen",
+                      "fr": "La batterie d'un capteur doit être remplacée",
+                      "it": "La batteria di un sensore deve essere sostituita",
+                      "es": "La batería de un sensor debe ser reemplazada",
+                      "pl": "Bateria czujnika musi zostać wymieniona",
+                      "uk": "Акумулятор датчика необхідно замінити",
+                      "zh-cn": "传感器的电池需要更换"
+                    },
+                    "regex": [],
+                    "limit": 1
+                }
+            ]
+        }
+    ],
     "objects": [
         {
             "_id": "fyta",
             "type": "meta",
             "common": {
                 "name": {
-					"en": "FYTA files",
-					"de": "FYTA-Dateien",
-					"ru": "FYTA файлы",
-					"pt": "Arquivos FYTA",
-					"nl": "FYTA-bestanden",
-					"fr": "Dossiers FYTA",
-					"it": "File FYTA",
-					"es": "Archivo de FYTA",
-					"pl": "Pliki FYTA",
-					"uk": "Файли FYTA",
-					"zh-cn": "FYTA 文件"
-				}
+                    "en": "FYTA files",
+                    "de": "FYTA-Dateien",
+                    "ru": "FYTA файлы",
+                    "pt": "Arquivos FYTA",
+                    "nl": "FYTA-bestanden",
+                    "fr": "Dossiers FYTA",
+                    "it": "File FYTA",
+                    "es": "Archivo de FYTA",
+                    "pl": "Pliki FYTA",
+                    "uk": "Файли FYTA",
+                    "zh-cn": "FYTA 文件"
+                }
             }
         }
     ],
@@ -146,18 +289,18 @@
             "type": "channel",
             "common": {
                 "name": {
-					"en": "Information",
-					"de": "Informationen",
-					"ru": "Информация",
-					"pt": "Informação",
-					"nl": "Informatie",
-					"fr": "Informations",
-					"it": "Informazioni",
-					"es": "Información",
-					"pl": "Informacje",
-					"uk": "Інформація",
-					"zh-cn": "资料"
-				}
+                    "en": "Information",
+                    "de": "Informationen",
+                    "ru": "Информация",
+                    "pt": "Informação",
+                    "nl": "Informatie",
+                    "fr": "Informations",
+                    "it": "Informazioni",
+                    "es": "Información",
+                    "pl": "Informacje",
+                    "uk": "Інформація",
+                    "zh-cn": "资料"
+                }
             },
             "native": {}
         },
@@ -167,18 +310,18 @@
             "common": {
                 "role": "indicator.connected",
                 "name": {
-					"en": "Cloud connected",
-					"de": "Mit Cloud verbunden",
-					"ru": "Облако подключено",
-					"pt": "Conectado à nuvem",
-					"nl": "Cloud verbonden",
-					"fr": "Nuage connecté",
-					"it": "Cloud collegato",
-					"es": "Cloud conectado",
-					"pl": "Przyłączona chmura",
-					"uk": "Хмарний підключений",
-					"zh-cn": "连接云"
-				},
+                    "en": "Cloud connected",
+                    "de": "Mit Cloud verbunden",
+                    "ru": "Облако подключено",
+                    "pt": "Conectado à nuvem",
+                    "nl": "Cloud verbonden",
+                    "fr": "Nuage connecté",
+                    "it": "Cloud collegato",
+                    "es": "Cloud conectado",
+                    "pl": "Przyłączona chmura",
+                    "uk": "Хмарний підключений",
+                    "zh-cn": "连接云"
+                },
                 "type": "boolean",
                 "read": true,
                 "write": false,
@@ -192,18 +335,18 @@
             "common": {
                 "role": "state",
                 "name": {
-					"en": "Time at which the states were last updated",
-					"de": "Zeitpunkt des letzten Updates",
-					"ru": "Время, в которое государства были в последний раз обновлены",
-					"pt": "Tempo em que os estados foram atualizados pela última vez",
-					"nl": "Tijd waarop de staten voor het laatst werden bijgewerkt",
-					"fr": "Dernière mise à jour des états",
-					"it": "Tempo in cui gli stati sono stati aggiornati",
-					"es": "Hora en que los estados fueron actualizados por última vez",
-					"pl": "Czas ostatniej aktualizacji stanów",
-					"uk": "Час, в якому штати були оновлено",
-					"zh-cn": "最后一次更新各州的时间"
-}				,
+                    "en": "Time at which the states were last updated",
+                    "de": "Zeitpunkt des letzten Updates",
+                    "ru": "Время, в которое государства были в последний раз обновлены",
+                    "pt": "Tempo em que os estados foram atualizados pela última vez",
+                    "nl": "Tijd waarop de staten voor het laatst werden bijgewerkt",
+                    "fr": "Dernière mise à jour des états",
+                    "it": "Tempo in cui gli stati sono stati aggiornati",
+                    "es": "Hora en que los estados fueron actualizados por última vez",
+                    "pl": "Czas ostatniej aktualizacji stanów",
+                    "uk": "Час, в якому штати були оновлено",
+                    "zh-cn": "最后一次更新各州的时间"
+}                ,
                 "type": "string",
                 "read": true,
                 "write": false,
