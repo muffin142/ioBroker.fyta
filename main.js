@@ -37,10 +37,10 @@ class Fyta extends utils.Adapter {
 		//this.log.info("Setting is " + this.config.notificationsEnabled); 
 		//this.log.info("Is Active: " + notificationsDefinition.plant.moisture_status[0].active(this));
 
-		const plant = {nickname: "Mickey", scientific_name: "Mickus Mausus"};
-		const template = notificationsDefinition.plant.light_status[0].notification.template(plant);
+		// const plant = {nickname: "Mickey", scientific_name: "Mickus Mausus"};
+		// const template = notificationsDefinition.plant.light_status[0].notification.template(plant);
 		//this.registerNotification("fyta","checkPlant", template.message);
-		this.log.info("Send: " + template.message) ;
+		// this.log.info("Send: " + template.message) ;
 
 		/*
 		const fs = require('fs');
@@ -50,7 +50,7 @@ class Fyta extends utils.Adapter {
 
 		this.log.info("Translation: " + utils.I18n.translate("notificationPlantLightTooBright", plant.nickname));
 		*/
-		return;
+		// return;
 		
 		// Clear all Data?
 		if (this.config.clearOnStartup) {
@@ -280,9 +280,9 @@ class Fyta extends utils.Adapter {
 				this.log.info(`Retrieved ${data.gardens.length} gardens and ${data.plants.length} plants`);
 				const virtualGardenNameCleaned = this.cleanName(this.config.virtualGardenName);
 
-				//
 				// Looping gardens
-				data.gardens.forEach(async (garden) => {
+				// Await all gardens to be created so that they are available for the plants coming next.
+				await Promise.all(data.gardens.map(async (garden) => {
 					this.log.debug(`Handling garden ${garden.garden_name}`);
 
 					// Create garden object
@@ -299,8 +299,8 @@ class Fyta extends utils.Adapter {
 
 					// Create garden states
 					this.log.debug("Create states...");
-					this.setStatesOrCreate(gardenObjectID, garden, "garden");
-				});
+					await this.setStatesOrCreate(gardenObjectID, garden, "garden");
+				}));
 
 				//
 				// looping plants
@@ -515,7 +515,7 @@ class Fyta extends utils.Adapter {
 	 * @param obj object from api
 	 * @param string states type to transform ("hub", "plant", "garden", "sensor")
 	 */
-	setStatesOrCreate(strParentObjectID, obj, stateType) {
+	async setStatesOrCreate(strParentObjectID, obj, stateType) {
 		const statesToUse = statesDefinition[stateType];
 		const notificationBase = notificationsDefinition[stateType];
 		
@@ -536,16 +536,10 @@ class Fyta extends utils.Adapter {
 				stateValue = stateDefinition.def;
 			}
 
-			this.log.debug(`Set state ${stateID} to ${stateValue} (type ${stateDefinition.type})`);
+			this.log.debug(`Set state ${this.namespace}.${stateID} to ${stateValue} (type ${stateDefinition.type})`);
 			
-			// Retrieve old value if available
-			let statePrevValue = null;
-			this.getState(stateID, (err, state) => {
-				if (!err && state) {
-					statePrevValue = state.val; 
-				} 
-			});
-			this.log.debug(`Previous value of state ${stateID} is ${statePrevValue}`);
+			const statePrevValue = (await this.getStateAsync(`${this.namespace}.${stateID}`))?.val ?? null;
+			this.log.silly(`Previous value of state ${stateID} is ${statePrevValue}`);
 
 			// Create opr set state object
 			this.setStateOrCreate(stateID, stateValue, {
@@ -564,8 +558,7 @@ class Fyta extends utils.Adapter {
 			});
 
 			// Send notification if neccessary
-			if(statePrevValue !== stateValue){				
-				this.log.debug("Previous value !== current value, raising notification");
+			if(statePrevValue !== stateValue) {
 				const notificationMetaArray = notificationBase?.[stateSourceObject];
 				if(!!notificationMetaArray){
 					notificationMetaArray.forEach(async (notificationMeta) => {
@@ -573,6 +566,8 @@ class Fyta extends utils.Adapter {
 							const category = notificationMeta.notification.category;
 							const { message, ...contextData } = notificationMeta.notification.template(obj);
 
+							this.log.debug(`Previous value !== current value, raising notification ${category}:${message}`);
+							
 							// Discard promise, no need to await here.
 							const _1 = this.registerNotification("fyta", category, message, { contextData });
 						}
