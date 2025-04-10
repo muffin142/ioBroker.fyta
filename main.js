@@ -30,27 +30,8 @@ class Fyta extends utils.Adapter {
 	 */
 	async onReady() {
 		
+		//i18n init
 		await utils.I18n.init(__dirname, this);
-		//this.log.debug(JSON.stringify(this));
-		
-		
-		//this.log.info("Setting is " + this.config.notificationsEnabled); 
-		//this.log.info("Is Active: " + notificationsDefinition.plant.moisture_status[0].active(this));
-
-		// const plant = {nickname: "Mickey", scientific_name: "Mickus Mausus"};
-		// const template = notificationsDefinition.plant.light_status[0].notification.template(plant);
-		//this.registerNotification("fyta","checkPlant", template.message);
-		// this.log.info("Send: " + template.message) ;
-
-		/*
-		const fs = require('fs');
-		const items = fs.readdirSync(__dirname);
-		this.log.info(JSON.stringify(items))
-
-
-		this.log.info("Translation: " + utils.I18n.translate("notificationPlantLightTooBright", plant.nickname));
-		*/
-		// return;
 		
 		// Clear all Data?
 		if (this.config.clearOnStartup) {
@@ -93,6 +74,7 @@ class Fyta extends utils.Adapter {
 			//this.config.clearOnStartup = false;
 			this.changeOption("clearOnStartup", false);
 		}
+
 
 		// Define reccuring loading function
 		let loadDataFailedCount = 0;
@@ -232,7 +214,7 @@ class Fyta extends utils.Adapter {
 	 * @param token Bearer Token
 	 */
 	async fytaGetData(token) {
-		this.log.debug("Start fytaGetData()");
+		this.log.debug("Start fytaGetData(***)");
 
 		try {
 			const response = await axios.get("https://web.fyta.de/api/user-plant", {
@@ -252,6 +234,40 @@ class Fyta extends utils.Adapter {
 				return response.data;
 			}
 			this.log.error(`Retrieving gardens and plants was not successfull (HTTP-Status ${response.status})`);
+		} catch (error) {
+			// handle error
+			this.log.error("An error occured while retrieving gardens and plants.");
+			this.log.debug(error);
+		}
+
+		return null;
+	}
+
+	/**
+	 * Retrieves raw Values per Plant from FYTA API
+	 * @param token Bearer Token
+	 * @param plantID Plant ID
+	 */
+	async fytaRawValues(token, plantID){
+		this.log.debug(`Start fytaRawValues(***, ${plantID})`);
+
+		try {
+			const response = await axios.get(`https://web.fyta.de/api/user-plant/${plantID}`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					timeout: 10000, // only wait for 10s
+				},
+			});
+
+			// Check for successfull response
+			this.log.debug(`Response status is ${response.status} (Data-Request)`);
+			if (response.status === 200) {
+				if (!response.data) {
+					this.log.error("Response does not contain access_token");
+				}
+				return response.data;
+			}
+			this.log.error(`Retrieving raw values was not successfull`);
 		} catch (error) {
 			// handle error
 			this.log.error("An error occured while retrieving gardens and plants.");
@@ -439,6 +455,24 @@ class Fyta extends utils.Adapter {
 						};
 						this.setStatesOrCreate(hubObjectID, hub, "hub");
 					}
+
+					// Looking for raw values
+					if(true){
+						const rawValues = await this.fytaRawValues(resultLogin.token, plant.id);
+						if(rawValues !== null){
+							const rawValuesObjectID = `${plantObjectID}.rawValues`;
+
+							this.setObjectNotExists(rawValuesObjectID, {
+								type: "folder",
+								common: {
+									name: "rawValues"
+								},
+								native: {},
+							});
+
+							this.setStatesOrCreate(rawValuesObjectID, rawValues, "rawValues");
+						}
+					}
 				});
 
 				this.setState("info.last_update", new Date().toLocaleString(), true);
@@ -522,22 +556,33 @@ class Fyta extends utils.Adapter {
 		this.log.debug("StateType is " + stateType);
 
 		for (const [stateSourceObject, stateDefinition] of Object.entries(statesToUse)) {
-			if (!(stateSourceObject in obj) && !("def" in stateDefinition)) {
+			const objValue = this.getValueFromPath(obj, stateSourceObject)
+
+			//if (!(stateSourceObject in obj) && !("def" in stateDefinition)) {
+			if (!(objValue !== undefined) && !("def" in stateDefinition)) {
 				this.log.warn(`There is not a property "${stateSourceObject}"`);
 				continue;
 			}
 
 			const stateID = `${strParentObjectID}.${stateDefinition.name}`;
 			let stateValue = null; 
-			if (stateSourceObject in obj) {
-				stateValue = obj[stateSourceObject];
+			//if (stateSourceObject in obj) {
+			if(objValue !== undefined){
+				stateValue = objValue; //obj[stateSourceObject];
 			}
 			if (stateValue === null && "def" in stateDefinition) {
 				stateValue = stateDefinition.def;
 			}
 
-			this.log.debug(`Set state ${this.namespace}.${stateID} to ${stateValue} (type ${stateDefinition.type})`);
+
+			if("convert" in stateDefinition){
+				this.log.debug("Converting value...");
+				stateValue = stateDefinition.convert(stateValue);
+			}
+
+			this.log.debug(`Set state ${stateID} to ${stateValue} (type ${stateDefinition.type})`);
 			
+			// Retrieve old value if available
 			const statePrevValue = (await this.getStateAsync(`${this.namespace}.${stateID}`))?.val ?? null;
 			this.log.silly(`Previous value of state ${stateID} is ${statePrevValue}`);
 
@@ -576,6 +621,15 @@ class Fyta extends utils.Adapter {
 			}
 		}
 	}
+
+	getValueFromPath(obj, path) {
+		return path.split('.').reduce((acc, key) => {
+		  if (acc && typeof acc === 'object') {
+			return acc[key];
+		  }
+		  return undefined;
+		}, obj);
+	  }
 
 	/**
 	 * Sets and optionally creates a state if it doies not exists
