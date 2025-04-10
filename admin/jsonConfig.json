@@ -37,6 +37,16 @@
                     "lg": 4,
                     "xl": 4
                 },
+                "retrieveRawValues": {
+                    "newLine": true,
+                    "type": "checkbox",
+                    "label": "Retrieve raw values",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 4,
+                    "xl": 4
+                },
                 "clearOnStartup": {
                     "newLine": true,
                     "type": "checkbox",
