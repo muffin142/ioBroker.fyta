@@ -8,6 +8,7 @@
     "Garden that plants are assigned to when they dont belong to any other garden": "Garten, dem Pflanzen zugeordnet werden, wenn sie nicht zu einem anderen Garten gehören",
     "Notifications": "Benachrichtigungen",
     "Use internal notification system": "Verwende das interne Banchachrigungssystem",
+    "Send notifications already for low critical values (a little to warm/dark/...)": "Sende Benachrichtigungen bereits bei geringfügig kritischen Werten (etwas zu warm/dunkel/...)",
     "For which plant data points would you like to receive notifications?": "Für welche Datenpunkte der Pflanzen sollen Benachrichtungen gesendet werden?",
     "Light": "Licht",
     "Moisture": "Wasser",

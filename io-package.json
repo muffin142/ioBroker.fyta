@@ -153,6 +153,7 @@
         "retrieveRawValues": false,
         "clearOnStartup": false,
         "notificationsEnabled": true,
+        "notificationsLowCritical": false,
         "notificationsPlantLight": true,
         "notificationsPlantMoistureEnabled": true,
         "notificationsPlantNutrients": true,

@@ -9,6 +9,7 @@
 
 	"Notifications": "Notifications",
 	"Use internal notification system": "Use internal notification system",
+    "Send notifications already for low critical values (a little to warm/dark/...)": "Send notifications already for low critical values (a little to warm/dark/...)",
 	"For which plant data points would you like to receive notifications?": "For which plant data points would you like to receive notifications?",
 	"Light": "Light",
 	"Moisture": "Moisture",
