@@ -1,5 +1,7 @@
 {
+    "It a little too bright for %s": "È un po 'troppo luminoso per %s",
     "It is too bright for %s": "È troppo luminoso per %s",
+    "It is a little too dark for %s": "È un po 'troppo buio per %s",
     "It is too dark for %s": "È troppo buio per %s",
     "%s is overwatered": "%s è eccessivo",
     "%s has too little water": "%s ha troppo poca acqua",
@@ -8,4 +10,4 @@
     "%s is too warm": "%s è troppo caldo",
     "%s is too cold": "%s è troppo freddo",
     "Sensor on %s (ID %s) is low on battery": "Il sensore su %s (id %s) è a bassa batteria"
-}
+}  

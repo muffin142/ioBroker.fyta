@@ -13,5 +13,7 @@
     "Nutrients": "Nutrientes",
     "Temperature": "Temperatura",
     "For which sensor data points would you like to receive notifications?": "¿Para qué puntos de datos del sensor le gustaría recibir notificaciones?",
-    "Battery low": "Batería baja"
+    "Battery low": "Batería baja",
+    "Retrieve raw values": "Recuperar valores sin procesar",
+    "Send notifications already for low critical values (a little to warm/dark/...)": "Enviar notificaciones ya para valores críticos bajos (un poco a cálido/oscuro/...)"
 }

@@ -586,7 +586,7 @@ class Fyta extends utils.Adapter {
 			const statePrevValue = (await this.getStateAsync(`${this.namespace}.${stateID}`))?.val ?? null;
 			this.log.silly(`Previous value of state ${stateID} is ${statePrevValue}`);
 
-			// Create opr set state object
+			// Create or set state object
 			this.setStateOrCreate(stateID, stateValue, {
 				common: {
 					...{

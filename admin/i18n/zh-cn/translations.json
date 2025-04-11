@@ -13,5 +13,7 @@
     "Nutrients": "营养",
     "Temperature": "温度",
     "For which sensor data points would you like to receive notifications?": "您想为哪些传感器数据点接收通知？",
-    "Battery low": "电池低"
+    "Battery low": "电池低",
+    "Retrieve raw values": "检索原始值",
+    "Send notifications already for low critical values (a little to warm/dark/...)": "发送已经以低临界值的通知（有点温暖/黑暗/...）"
 }

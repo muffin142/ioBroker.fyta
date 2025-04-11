@@ -13,5 +13,7 @@
     "Nutrients": "Voedingsstoffen",
     "Temperature": "Temperatuur",
     "For which sensor data points would you like to receive notifications?": "Voor welke sensorgegevenspunten zou u meldingen willen ontvangen?",
-    "Battery low": "Batterij laag"
+    "Battery low": "Batterij laag",
+    "Retrieve raw values": "Ruwe waarden ophalen",
+    "Send notifications already for low critical values (a little to warm/dark/...)": "Stuur al meldingen voor lage kritische waarden (een beetje te warm/donker/...)"
 }

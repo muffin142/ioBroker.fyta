@@ -13,5 +13,7 @@
     "Nutrients": "Поживні речовини",
     "Temperature": "Температура",
     "For which sensor data points would you like to receive notifications?": "Для яких точок даних датчиків ви хотіли б отримати сповіщення?",
-    "Battery low": "Акумулятор низький"
+    "Battery low": "Акумулятор низький",
+    "Retrieve raw values": "Отримати необроблені значення",
+    "Send notifications already for low critical values (a little to warm/dark/...)": "Надішліть сповіщення, які вже мають низькі критичні значення (трохи тепло/темно/...)"
 }
