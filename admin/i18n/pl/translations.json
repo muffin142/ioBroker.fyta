@@ -3,5 +3,17 @@
     "Password": "Hasło",
     "Name for virtual garden": "Nazwa wirtualnego ogrodu",
     "Garden that plants are assigned to when they dont belong to any other garden": "Ogród, do którego przypisane są rośliny, gdy nie należą do żadnego innego ogrodu",
-    "Clear all data on next start": "Wyczyść wszystkie dane na następnym starcie"
+    "Clear all data on next start": "Wyczyść wszystkie dane na następnym starcie",
+    "Common settings": "Wspólne ustawienia",
+    "Notifications": "Powiadomienia",
+    "Use internal notification system": "Użyj wewnętrznego systemu powiadomień",
+    "For which plant data points would you like to receive notifications?": "W jakich punktach danych roślin chciałbyś otrzymywać powiadomienia?",
+    "Light": "Światło",
+    "Moisture": "Wilgoć",
+    "Nutrients": "Składniki odżywcze",
+    "Temperature": "Temperatura",
+    "For which sensor data points would you like to receive notifications?": "W jakich punktach danych czujnika chciałbyś otrzymać powiadomienia?",
+    "Battery low": "Bateria niska",
+    "Retrieve raw values": "Odzyskać surowe wartości",
+    "Send notifications already for low critical values (a little to warm/dark/...)": "Wyślij powiadomienia już dla niskich wartości krytycznych (trochę do ciepłego/ciemnego/...)"
 }

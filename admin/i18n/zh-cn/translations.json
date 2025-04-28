@@ -3,5 +3,17 @@
     "Password": "密码",
     "Name for virtual garden": "虚拟花园的名称",
     "Garden that plants are assigned to when they dont belong to any other garden": "当植物不属于其他花园时，植物被分配给",
-    "Clear all data on next start": "在下一个开始上清除所有数据"
-} 
+    "Clear all data on next start": "在下一个开始上清除所有数据",
+    "Common settings": "通用设置",
+    "Notifications": "通知",
+    "Use internal notification system": "使用内部通知系统",
+    "For which plant data points would you like to receive notifications?": "您想收到哪些工厂数据点？",
+    "Light": "光",
+    "Moisture": "水分",
+    "Nutrients": "营养",
+    "Temperature": "温度",
+    "For which sensor data points would you like to receive notifications?": "您想为哪些传感器数据点接收通知？",
+    "Battery low": "电池低",
+    "Retrieve raw values": "检索原始值",
+    "Send notifications already for low critical values (a little to warm/dark/...)": "发送已经以低临界值的通知（有点温暖/黑暗/...）"
+}

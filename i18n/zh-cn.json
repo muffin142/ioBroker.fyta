@@ -1,0 +1,13 @@
+{
+  "It a little too bright for %s": "它有点太亮了％s",
+  "It is too bright for %s": "它太亮了％s",
+  "It is a little too dark for %s": "它有点太黑了",
+  "It is too dark for %s": "太黑了",
+  "%s is overwatered": "％s被过水",
+  "%s has too little water": "％s的水太少",
+  "%s is overfertilized": "％s被过度使用",
+  "%s must be fertilized": "％s必须受精",
+  "%s is too warm": "％s太热了",
+  "%s is too cold": "％s太冷了",
+  "Sensor on %s (ID %s) is low on battery": "％s（id％s）电池的传感器较低"
+}

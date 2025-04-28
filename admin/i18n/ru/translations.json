@@ -3,5 +3,17 @@
     "Password": "Пароль",
     "Name for virtual garden": "Название виртуального сада",
     "Garden that plants are assigned to when they dont belong to any other garden": "Сад, на который назначены растения, когда они не принадлежат ни одному другому саду",
-    "Clear all data on next start": "Очистить все данные при следующем старте"
+    "Clear all data on next start": "Очистить все данные при следующем старте",
+    "Common settings": "Общие настройки",
+    "Notifications": "Уведомления",
+    "Use internal notification system": "Используйте систему внутренних уведомлений",
+    "For which plant data points would you like to receive notifications?": "Для каких точек данных завода вы хотели бы получить уведомления?",
+    "Light": "Свет",
+    "Moisture": "Влага",
+    "Nutrients": "Питательные вещества",
+    "Temperature": "Температура",
+    "For which sensor data points would you like to receive notifications?": "Для каких точек данных датчика вы хотели бы получить уведомления?",
+    "Battery low": "Батарея низко",
+    "Retrieve raw values": "Получить необработанные значения",
+    "Send notifications already for low critical values (a little to warm/dark/...)": "Отправить уведомления уже для низких критических значений (немного тепло/темно/...)"
 }

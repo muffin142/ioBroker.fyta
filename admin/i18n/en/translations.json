@@ -1,7 +1,21 @@
 {
+	"Common settings": "Common settings",
     "eMail": "E-Mail-Address",
     "Password": "Password",
 	"Name for virtual garden": "Name for virtual garden",
 	"Garden that plants are assigned to when they dont belong to any other garden": "Garden plants are assigned to when they dont belong to any other garden",
-	"Clear all data on next start": "Clear all data on next start"
-} 
+	"Retrieve raw values": "Retrieve raw values",
+	"Clear all data on next start": "Clear all data on next start",
+
+	"Notifications": "Notifications",
+	"Use internal notification system": "Use internal notification system",
+    "Send notifications already for low critical values (a little to warm/dark/...)": "Send notifications already for low critical values (a little to warm/dark/...)",
+	"For which plant data points would you like to receive notifications?": "For which plant data points would you like to receive notifications?",
+	"Light": "Light",
+	"Moisture": "Moisture",
+	"Nutrients": "Nutrients",
+	"Temperature": "Temperature",
+	"For which sensor data points would you like to receive notifications?": "For which sensor data points would you like to receive notifications?",
+	"Battery low": "Battery low"
+
+}

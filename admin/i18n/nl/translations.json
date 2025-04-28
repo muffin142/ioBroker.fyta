@@ -3,5 +3,17 @@
     "Password": "Wachtwoord",
     "Name for virtual garden": "Naam voor virtuele tuin",
     "Garden that plants are assigned to when they dont belong to any other garden": "Tuin waaraan planten worden toegewezen als ze niet tot een andere tuin behoren",
-    "Clear all data on next start": "Wis alle gegevens bij de volgende start"
+    "Clear all data on next start": "Wis alle gegevens bij de volgende start",
+    "Common settings": "Veel voorkomende instellingen",
+    "Notifications": "Meldingen",
+    "Use internal notification system": "Gebruik het interne meldingssysteem",
+    "For which plant data points would you like to receive notifications?": "Voor welke fabrieksgegevenspunten zou u meldingen willen ontvangen?",
+    "Light": "Licht",
+    "Moisture": "Vocht",
+    "Nutrients": "Voedingsstoffen",
+    "Temperature": "Temperatuur",
+    "For which sensor data points would you like to receive notifications?": "Voor welke sensorgegevenspunten zou u meldingen willen ontvangen?",
+    "Battery low": "Batterij laag",
+    "Retrieve raw values": "Ruwe waarden ophalen",
+    "Send notifications already for low critical values (a little to warm/dark/...)": "Stuur al meldingen voor lage kritische waarden (een beetje te warm/donker/...)"
 }

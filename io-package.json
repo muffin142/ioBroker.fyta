@@ -1,8 +1,34 @@
 { 
     "common": {
         "name": "fyta",
-        "version": "0.1.5",
-        "news": {			
+        "version": "0.2.0",
+        "news": {
+            "0.2.0": {
+                "en": "Added retrieval of raw values and use of internal notifications",
+                "de": "Ermittlung von Rohwerte und Verwendung interner Meldungen ergänzt",
+                "ru": "Дополнительный поиск исходных значений и использование внутренних уведомлений",
+                "pt": "Recuperação adicional de valores brutos e utilização de notificações internas",
+                "nl": "Toegevoegd ophalen van ruwe waarden en gebruik van interne meldingen",
+                "fr": "Extraction supplémentaire de valeurs brutes et utilisation de notifications internes",
+                "it": "Aggiunto il recupero dei valori grezzi e l'uso delle notifiche interne",
+                "es": "Añadida recuperación de valores brutos uso indebido de notificaciones internas",
+                "pl": "Dodano pobieranie wartości surowych i korzystanie z powiadomień wewnętrznych",
+                "uk": "Додана ретривалізація значень, що не використовують внутрішні повідомлення",
+                "zh-cn": "未使用内部通知的原始值添加检索"
+            },
+            "0.1.6": {
+                "en": "Use of the internal notificationsystem supplemented",
+                "de": "Verwendung des internen Notifizierungssystems ergänzt",
+                "ru": "Использование внутренней системы уведомлений",
+                "pt": "Uso do sistema de notificação interna suplementado",
+                "nl": "Gebruik van het aanvullende interne kennisgevingssysteem",
+                "fr": "Utilisation du système de notification interne complété",
+                "it": "Utilizzo del sistema di notifica interno integrato",
+                "es": "Utilización del sistema de notificación interna complementada",
+                "pl": "Uzupełnione stosowanie wewnętrznego systemu zgłaszania",
+                "uk": "Використання вбудованої системи сповіщення",
+                "zh-cn": "补充使用内部通知系统"
+            },
             "0.1.5": {
                 "en": "Fix issue with image download",
                 "de": "Problem mit Bilderdownload behoben",
@@ -15,7 +41,7 @@
                 "pl": "Napraw problem z pobieraniem obrazu",
                 "uk": "Виправлення проблеми з завантаженням зображень",
                 "zh-cn": "用图像下载处理问题"
-			},
+            },
             "0.1.4": {
                 "en": "minor changes due to publishing to ioBroker.repository:latest",
                 "de": "Kleine Anpassungen für die veröffentlichung in ioBroker.repository:latest",
@@ -109,7 +135,7 @@
         },
         "platform": "Javascript/Node.js",
         "icon": "fyta.png",
-        "enabled": false,
+        "enabled": true,
         "extIcon": "https://raw.githubusercontent.com/muffin142/iobroker.fyta/main/admin/fyta.png",
         "readme": "https://github.com/muffin142/ioBroker.fyta/blob/main/README.md",
         "loglevel": "info",
@@ -137,12 +163,15 @@
         "email": "",
         "password": "",
         "virtualGardenName": "Ithilien",
-        "clearOnStartup": false,		
+        "retrieveRawValues": false,
+        "clearOnStartup": false,
         "notificationsEnabled": true,
+        "notificationsLowCritical": false,
         "notificationsPlantLight": true,
         "notificationsPlantMoistureEnabled": true,
         "notificationsPlantNutrients": true,
-        "notificationsPlantTemperature": true		
+        "notificationsPlantTemperature": true,
+        "notificationsSensorBatteryLow": true
     },
     "protectedNative": [
         "password"
@@ -154,95 +183,95 @@
         {
             "scope": "fyta",
             "name": {
-              "en": "Fyta",
-              "de": "Fyta",
-              "ru": "Fyta",
-              "pt": "Fyta",
-              "nl": "Fyta",
-              "fr": "Fyta",
-              "it": "Fyta",
-              "es": "Fyta",
-              "pl": "Fyta",
-              "uk": "Fyta",
-              "zh-cn": "Fyta"
+                "en": "FYTA",
+                "de": "FYTA",
+                "ru": "FYTA",
+                "pt": "FYTA",
+                "nl": "FYTA",
+                "fr": "FYTA",
+                "it": "FYTA",
+                "es": "FYTA",
+                "pl": "FYTA",
+                "uk": "FYTA",
+                "zh-cn": "FYTA"
             },
             "description": {
-              "en": "Notifications about plants and devices",
-              "de": "Meldungen über Pflanzen und Geräte",
-              "ru": "Уведомления о растениях и устройствах",
-              "pt": "Notificações sobre plantas e dispositivos",
-              "nl": "Kennisgevingen over installaties en apparaten",
-              "fr": "Notifications concernant les installations et les dispositifs",
-              "it": "Notifiche su impianti e dispositivi",
-              "es": "Notificaciones sobre plantas y dispositivos",
-              "pl": "Powiadomienia o instalacjach i urządzeniach",
-              "uk": "Повідомлення про рослини та пристрої",
-              "zh-cn": "关于工厂和装置的通知"
+                "en": "Notifications about plants and FYTA-devices",
+                "de": "Meldungen über Pflanzen und FYTA-Geräte",
+                "ru": "Уведомления о растениях и устройствах",
+                "pt": "Notificações sobre plantas e dispositivos",
+                "nl": "Kennisgevingen over installaties en apparaten",
+                "fr": "Notifications concernant les installations et les dispositifs",
+                "it": "Notifiche su impianti e dispositivi",
+                "es": "Notificaciones sobre plantas y dispositivos",
+                "pl": "Powiadomienia o instalacjach i urządzeniach",
+                "uk": "Повідомлення про рослини та пристрої",
+                "zh-cn": "关于工厂和装置的通知"
             },
             "categories": [
                 {
                     "category": "checkPlant",
                     "name": {
-                      "en": "Check plant",
-                      "de": "Überprüfe deine Pflanze",
-                      "ru": "Проверить завод",
-                      "pt": "Verificação da planta",
-                      "nl": "Controle-installatie",
-                      "fr": "Vérifier l'installation",
-                      "it": "Impianto di controllo",
-                      "es": "Planta de control",
-                      "pl": "Zakład kontroli",
-                      "uk": "Перевірити завод",
-                      "zh-cn": "检查厂"
+                        "en": "Check plant",
+                        "de": "Überprüfe deine Pflanze",
+                        "ru": "Проверить завод",
+                        "pt": "Verificação da planta",
+                        "nl": "Controle-installatie",
+                        "fr": "Vérifier l'installation",
+                        "it": "Impianto di controllo",
+                        "es": "Planta de control",
+                        "pl": "Zakład kontroli",
+                        "uk": "Перевірити завод",
+                        "zh-cn": "检查厂"
                     },
                     "severity": "alert",
                     "description": {
-                      "en": "A plant is not doing great",
-                      "de": "Eine Pflanze geht es nicht gut",
-                      "ru": "Растение не делает ничего хорошего",
-                      "pt": "Uma planta não está fazendo grande",
-                      "nl": "Een plant doet het niet goed",
-                      "fr": "Une plante ne se porte pas bien",
-                      "it": "Una pianta non sta facendo grande",
-                      "es": "Una planta no está haciendo bien",
-                      "pl": "Roślina nie radzi sobie zbyt dobrze",
-                      "uk": "Рослина не робить",
-                      "zh-cn": "植物做得很好,没有用"
+                        "en": "A plant is not doing great",
+                        "de": "Einer Pflanze geht es nicht gut",
+                        "ru": "Растение не делает ничего хорошего",
+                        "pt": "Uma planta não está fazendo grande",
+                        "nl": "Een plant doet het niet goed",
+                        "fr": "Une plante ne se porte pas bien",
+                        "it": "Una pianta non sta facendo grande",
+                        "es": "Una planta no está haciendo bien",
+                        "pl": "Roślina nie radzi sobie zbyt dobrze",
+                        "uk": "Рослина не робить",
+                        "zh-cn": "植物做得很好,没有用"
                     },
                     "regex": [],
-                    "limit": 1
+                    "limit": 100
                 },
                 {
                     "category": "lowBattery",
                     "name": {
-                      "en": "Check battery status",
-                      "de": "Batteriestatus überprüfen",
-                      "ru": "Проверьте состояние батареи",
-                      "pt": "Verificar o estado da bateria",
-                      "nl": "Batterijstatus controleren",
-                      "fr": "Vérifier l'état de la batterie",
-                      "it": "Controlla lo stato della batteria",
-                      "es": "Estado de la batería",
-                      "pl": "Sprawdzić stan baterii",
-                      "uk": "Перевірити стан батареї",
-                      "zh-cn": "检查电池状态"
+                        "en": "Check battery status",
+                        "de": "Batteriestatus überprüfen",
+                        "ru": "Проверьте состояние батареи",
+                        "pt": "Verificar o estado da bateria",
+                        "nl": "Batterijstatus controleren",
+                        "fr": "Vérifier l'état de la batterie",
+                        "it": "Controlla lo stato della batteria",
+                        "es": "Estado de la batería",
+                        "pl": "Sprawdzić stan baterii",
+                        "uk": "Перевірити стан батареї",
+                        "zh-cn": "检查电池状态"
                     },
                     "severity": "notify",
                     "description": {
-                      "en": "The battery of a sensor needs to be replaced",
-                      "de": "Die Batterie eines Sensors muss ersetzt werden",
-                      "ru": "Аккумулятор датчика необходимо заменить",
-                      "pt": "A bateria de um sensor precisa ser substituída",
-                      "nl": "De batterij van een sensor moet worden vervangen",
-                      "fr": "La batterie d'un capteur doit être remplacée",
-                      "it": "La batteria di un sensore deve essere sostituita",
-                      "es": "La batería de un sensor debe ser reemplazada",
-                      "pl": "Bateria czujnika musi zostać wymieniona",
-                      "uk": "Акумулятор датчика необхідно замінити",
-                      "zh-cn": "传感器的电池需要更换"
+                        "en": "The battery of a sensor needs to be replaced",
+                        "de": "Die Batterie eines Sensors muss ersetzt werden",
+                        "ru": "Аккумулятор датчика необходимо заменить",
+                        "pt": "A bateria de um sensor precisa ser substituída",
+                        "nl": "De batterij van een sensor moet worden vervangen",
+                        "fr": "La batterie d'un capteur doit être remplacée",
+                        "it": "La batteria di un sensore deve essere sostituita",
+                        "es": "La batería de un sensor debe ser reemplazada",
+                        "pl": "Bateria czujnika musi zostać wymieniona",
+                        "uk": "Акумулятор датчика необхідно замінити",
+                        "zh-cn": "传感器的电池需要更换"
                     },
                     "regex": [],
-                    "limit": 1
+                    "limit": 100
                 }
             ]
         }
@@ -331,7 +360,7 @@
                     "pl": "Czas ostatniej aktualizacji stanów",
                     "uk": "Час, в якому штати були оновлено",
                     "zh-cn": "最后一次更新各州的时间"
-}                ,
+                },
                 "type": "string",
                 "read": true,
                 "write": false,

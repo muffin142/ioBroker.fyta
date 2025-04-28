@@ -1,5 +1,5 @@
 "use strict";
- 
+
 /*
  * Created with @iobroker/create-adapter v2.6.5
  */
@@ -10,6 +10,7 @@ const utils = require("@iobroker/adapter-core");
 const axios = require("axios");
 const path = require("path");
 const statesDefinition = require("./lib/statesDefinition.js");
+const notificationsDefinition = require("./lib/notificationsDefinition.js");
 
 class Fyta extends utils.Adapter {
 	/**
@@ -29,11 +30,8 @@ class Fyta extends utils.Adapter {
 	 */
 	async onReady() {
 		
-		//this.log.debug(JSON.stringify(this));
-		
-		
-		//this.log.info("Setting is " + this.config.notificationsEnabled); 
-		//this.log.info("Is Active: " + notificationsDefinition.plant.moisture_status[0].active(this));
+		//i18n init
+		await utils.I18n.init(__dirname, this);
 		
 		// Clear all Data?
 		if (this.config.clearOnStartup) {
@@ -64,7 +62,7 @@ class Fyta extends utils.Adapter {
 				const files = await this.readDirAsync(this.name, "plant");
 				for (const file of files) {
 					const filename = path.join("plant", file.file);
-					await this.delFile(this.name, filename, () => {
+					this.delFile(this.name, filename, () => {						
 						this.log.debug(`Deleted file: ${filename}`);
 					});
 				}
@@ -76,6 +74,7 @@ class Fyta extends utils.Adapter {
 			//this.config.clearOnStartup = false;
 			this.changeOption("clearOnStartup", false);
 		}
+
 
 		// Define reccuring loading function
 		let loadDataFailedCount = 0;
@@ -215,7 +214,7 @@ class Fyta extends utils.Adapter {
 	 * @param token Bearer Token
 	 */
 	async fytaGetData(token) {
-		this.log.debug("Start fytaGetData()");
+		this.log.debug("Start fytaGetData(***)");
 
 		try {
 			const response = await axios.get("https://web.fyta.de/api/user-plant", {
@@ -245,6 +244,40 @@ class Fyta extends utils.Adapter {
 	}
 
 	/**
+	 * Retrieves raw Values per Plant from FYTA API
+	 * @param token Bearer Token
+	 * @param plantID Plant ID
+	 */
+	async fytaRawValues(token, plantID){
+		this.log.debug(`Start fytaRawValues(***, ${plantID})`);
+
+		try {
+			const response = await axios.get(`https://web.fyta.de/api/user-plant/${plantID}`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					timeout: 10000, // only wait for 10s
+				},
+			});
+
+			// Check for successfull response
+			this.log.debug(`Response status is ${response.status} (Data-Request)`);
+			if (response.status === 200) {
+				if (!response.data) {
+					this.log.error("Response does not contain access_token");
+				}
+				return response.data;
+			}
+			this.log.error(`Retrieving raw values was not successfull`);
+		} catch (error) {
+			// handle error
+			this.log.error("An error occured while retrieving gardens and plants.");
+			this.log.debug(error);
+		}
+
+		return null;
+	}
+
+	/**
 	 * Loads data from FYTA cloud
 	 */
 	async loadData() {
@@ -263,9 +296,9 @@ class Fyta extends utils.Adapter {
 				this.log.info(`Retrieved ${data.gardens.length} gardens and ${data.plants.length} plants`);
 				const virtualGardenNameCleaned = this.cleanName(this.config.virtualGardenName);
 
-				//
 				// Looping gardens
-				data.gardens.forEach(async (garden) => {
+				// Await all gardens to be created so that they are available for the plants coming next.
+				await Promise.all(data.gardens.map(async (garden) => {
 					this.log.debug(`Handling garden ${garden.garden_name}`);
 
 					// Create garden object
@@ -282,8 +315,8 @@ class Fyta extends utils.Adapter {
 
 					// Create garden states
 					this.log.debug("Create states...");
-					this.setStatesOrCreate(gardenObjectID, garden, "garden");
-				});
+					await this.setStatesOrCreate(gardenObjectID, garden, "garden");
+				}));
 
 				//
 				// looping plants
@@ -396,7 +429,11 @@ class Fyta extends utils.Adapter {
 							native: {},
 						});
 
-						this.setStatesOrCreate(sensorObjectID, plant.sensor, "sensor");
+						const sensor = {
+							...plant.sensor,
+							plant: plant
+						};
+						this.setStatesOrCreate(sensorObjectID, sensor, "sensor");
 					}
 
 					// Looking for hub
@@ -412,7 +449,29 @@ class Fyta extends utils.Adapter {
 							native: {},
 						});
 
-						this.setStatesOrCreate(hubObjectID, plant.hub, "hub");
+						const hub = {
+							...plant.hub,
+							plant: plant
+						};
+						this.setStatesOrCreate(hubObjectID, hub, "hub");
+					}
+
+					// Looking for raw values
+					if(true){
+						const rawValues = await this.fytaRawValues(resultLogin.token, plant.id);
+						if(rawValues !== null){
+							const rawValuesObjectID = `${plantObjectID}.rawValues`;
+
+							this.setObjectNotExists(rawValuesObjectID, {
+								type: "folder",
+								common: {
+									name: "rawValues"
+								},
+								native: {},
+							});
+
+							this.setStatesOrCreate(rawValuesObjectID, rawValues, "rawValues");
+						}
 					}
 				});
 
@@ -490,38 +549,44 @@ class Fyta extends utils.Adapter {
 	 * @param obj object from api
 	 * @param string states type to transform ("hub", "plant", "garden", "sensor")
 	 */
-	setStatesOrCreate(strParentObjectID, obj, stateType) {
+	async setStatesOrCreate(strParentObjectID, obj, stateType) {
 		const statesToUse = statesDefinition[stateType];
+		const notificationBase = notificationsDefinition[stateType];
 		
 		this.log.debug("StateType is " + stateType);
 
 		for (const [stateSourceObject, stateDefinition] of Object.entries(statesToUse)) {
-			if (!(stateSourceObject in obj) && !("def" in stateDefinition)) {
+			const objValue = this.getValueFromPath(obj, stateSourceObject)
+
+			//if (!(stateSourceObject in obj) && !("def" in stateDefinition)) {
+			if (!(objValue !== undefined) && !("def" in stateDefinition)) {
 				this.log.warn(`There is not a property "${stateSourceObject}"`);
 				continue;
 			}
 
 			const stateID = `${strParentObjectID}.${stateDefinition.name}`;
 			let stateValue = null; 
-			if (stateSourceObject in obj) {
-				stateValue = obj[stateSourceObject];
+			//if (stateSourceObject in obj) {
+			if(objValue !== undefined){
+				stateValue = objValue; //obj[stateSourceObject];
 			}
 			if (stateValue === null && "def" in stateDefinition) {
 				stateValue = stateDefinition.def;
 			}
 
+
+			if("convert" in stateDefinition){
+				this.log.debug("Converting value...");
+				stateValue = stateDefinition.convert(stateValue);
+			}
+
 			this.log.debug(`Set state ${stateID} to ${stateValue} (type ${stateDefinition.type})`);
 			
 			// Retrieve old value if available
-			let statePrevValue = null;
-			this.getState(stateID, (err, state) => {
-				if (!err && state) {
-					statePrevValue = state.val; 
-				} 
-			});
-			this.log.debug(`Previous value of state ${stateID} is ${statePrevValue}`);
+			const statePrevValue = (await this.getStateAsync(`${this.namespace}.${stateID}`))?.val ?? null;
+			this.log.silly(`Previous value of state ${stateID} is ${statePrevValue}`);
 
-			// Create opr set state object
+			// Create or set state object
 			this.setStateOrCreate(stateID, stateValue, {
 				common: {
 					...{
@@ -536,8 +601,35 @@ class Fyta extends utils.Adapter {
 					write: false,
 				},
 			});
+
+			// Send notification if neccessary
+			if(statePrevValue !== stateValue) {
+				const notificationMetaArray = notificationBase?.[stateSourceObject];
+				if(!!notificationMetaArray){
+					notificationMetaArray.forEach(async (notificationMeta) => {
+						if (!!notificationMeta && notificationMeta.active(this) && notificationMeta.filter(stateValue)) {
+							const category = notificationMeta.notification.category;
+							const { message, ...contextData } = notificationMeta.notification.template(obj);
+
+							this.log.debug(`Previous value !== current value, raising notification ${category}:${message}`);
+							
+							// Discard promise, no need to await here.
+							const _1 = this.registerNotification("fyta", category, message, { contextData });
+						}
+					});
+				}
+			}
 		}
 	}
+
+	getValueFromPath(obj, path) {
+		return path.split('.').reduce((acc, key) => {
+		  if (acc && typeof acc === 'object') {
+			return acc[key];
+		  }
+		  return undefined;
+		}, obj);
+	  }
 
 	/**
 	 * Sets and optionally creates a state if it doies not exists

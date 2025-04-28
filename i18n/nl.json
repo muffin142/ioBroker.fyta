@@ -1,0 +1,13 @@
+{
+    "It a little too bright for %s": "Het is een beetje te helder voor %s",
+    "It is too bright for %s": "Het is te helder voor %s",
+    "It is a little too dark for %s": "Het is een beetje te donker voor %s",
+    "It is too dark for %s": "Het is te donker voor %s",
+    "%s is overwatered": "%s is overwater",
+    "%s has too little water": "%s heeft te weinig water",
+    "%s is overfertilized": "%s is overboordis",
+    "%s must be fertilized": "%s moet worden bevrucht",
+    "%s is too warm": "%s is te warm",
+    "%s is too cold": "%s is te koud",
+    "Sensor on %s (ID %s) is low on battery": "Sensor op %s (id %s) heeft een laag batterij"
+  }
