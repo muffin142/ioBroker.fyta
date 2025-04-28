@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "fyta",
-        "version": "0.1.6",
+        "version": "0.2.0",
         "news": {
+            "0.2.0": {
+                "en": "Added retrieval of raw values and use of internal notifications",
+                "de": "Ermittlung von Rohwerte und Verwendung interner Meldungen ergänzt",
+                "ru": "Дополнительный поиск исходных значений и использование внутренних уведомлений",
+                "pt": "Recuperação adicional de valores brutos e utilização de notificações internas",
+                "nl": "Toegevoegd ophalen van ruwe waarden en gebruik van interne meldingen",
+                "fr": "Extraction supplémentaire de valeurs brutes et utilisation de notifications internes",
+                "it": "Aggiunto il recupero dei valori grezzi e l'uso delle notifiche interne",
+                "es": "Añadida recuperación de valores brutos uso indebido de notificaciones internas",
+                "pl": "Dodano pobieranie wartości surowych i korzystanie z powiadomień wewnętrznych",
+                "uk": "Додана ретривалізація значень, що не використовують внутрішні повідомлення",
+                "zh-cn": "未使用内部通知的原始值添加检索"
+            },
             "0.1.6": {
                 "en": "Use of the internal notificationsystem supplemented",
                 "de": "Verwendung des internen Notifizierungssystems ergänzt",
