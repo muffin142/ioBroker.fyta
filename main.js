@@ -6,13 +6,21 @@
 
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
+/*
 const utils = require("@iobroker/adapter-core");
 const path = require("path");
 const statesDefinition = require("./lib/statesDefinition.js");
 const notificationsDefinition = require("./lib/notificationsDefinition.js");
-
+*/
+import * as utils from "@iobroker/adapter-core";
+import path from "path";
+import statesDefinition from "./lib/statesDefinition.js";
+import notificationsDefinition from "./lib/notificationsDefinition.js";
 
 import axios from "axios";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 class Fyta extends utils.Adapter {
 	/**
@@ -715,13 +723,21 @@ class Fyta extends utils.Adapter {
 	}
 }
 
-if (require.main !== module) {
-	// Export the constructor in compact mode
-	/**
-	 * @param [options] Optionen
-	 */
-	module.exports = (options) => new Fyta(options);
-} else {
-	// otherwise start the instance directly
-	new Fyta();
+
+import { fileURLToPath } from 'url';
+
+// Aktuelle Datei als Pfad
+const currentFile = fileURLToPath(import.meta.url);
+// Datei, die direkt ausgeführt wurde
+const mainFile = process.argv[1] ? path.resolve(process.argv[1]) : null;
+
+// Factory-Funktion für compact mode
+const fytaFactory = (options) => new Fyta(options);
+
+// Export immer auf oberster Ebene
+export default fytaFactory;
+
+// Direkt starten, wenn die Datei direkt ausgeführt wird
+if (mainFile && path.normalize(currentFile) === path.normalize(mainFile)) {
+    new Fyta();
 }
