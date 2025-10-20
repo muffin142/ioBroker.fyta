@@ -7,10 +7,12 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 const utils = require("@iobroker/adapter-core");
-const axios = require("axios");
 const path = require("path");
 const statesDefinition = require("./lib/statesDefinition.js");
 const notificationsDefinition = require("./lib/notificationsDefinition.js");
+
+
+import axios from "axios";
 
 class Fyta extends utils.Adapter {
 	/**
@@ -29,7 +31,7 @@ class Fyta extends utils.Adapter {
 	 * Is called when databases are connected and adapter received configuration.
 	 */
 	async onReady() {
-		
+
 		//i18n init
 		await utils.I18n.init(__dirname, this);
 		
