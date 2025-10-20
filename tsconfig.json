@@ -29,7 +29,7 @@
 	"include": [
 		"**/*.js",
 		"**/*.d.ts"
-, "test/mocha.setup.mjs", "test/package.mjs"	],
+, "test/mocha.setup.mjs", "test/package.mjs", "test/integration.mjs"	],
 	"exclude": [
 		"node_modules/**",
 		"widgets/**"
