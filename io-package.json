@@ -16,6 +16,19 @@
                 "uk": "Додана ретривалізація значень, що не використовують внутрішні повідомлення",
                 "zh-cn": "未使用内部通知的原始值添加检索"
             },
+            "0.1.6": {
+                "en": "Use of the internal notificationsystem supplemented",
+                "de": "Verwendung des internen Notifizierungssystems ergänzt",
+                "ru": "Использование внутренней системы уведомлений",
+                "pt": "Uso do sistema de notificação interna suplementado",
+                "nl": "Gebruik van het aanvullende interne kennisgevingssysteem",
+                "fr": "Utilisation du système de notification interne complété",
+                "it": "Utilizzo del sistema di notifica interno integrato",
+                "es": "Utilización del sistema de notificación interna complementada",
+                "pl": "Uzupełnione stosowanie wewnętrznego systemu zgłaszania",
+                "uk": "Використання вбудованої системи сповіщення",
+                "zh-cn": "补充使用内部通知系统"
+            },
             "0.1.5": {
                 "en": "Fix issue with image download",
                 "de": "Problem mit Bilderdownload behoben",
