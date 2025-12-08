@@ -152,7 +152,7 @@
         "virtualGardenName": "Ithilien",
         "retrieveRawValues": false,
         "clearOnStartup": false,
-        "notificationsEnabled": true,
+        "notificationsEnabled": false,
         "notificationsLowCritical": false,
         "notificationsPlantLight": true,
         "notificationsPlantMoistureEnabled": true,
