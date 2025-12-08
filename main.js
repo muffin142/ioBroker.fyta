@@ -273,7 +273,7 @@ class Fyta extends utils.Adapter {
 			this.log.debug(`Response status is ${response.status} (Data-Request)`);
 			if (response.status === 200) {
 				if (!response.data) {
-					this.log.error("Response does not contain access_token");
+					this.log.error("Response does not contain data");
 				}
 				return response.data;
 			}
