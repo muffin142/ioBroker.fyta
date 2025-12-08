@@ -1,8 +1,21 @@
 { 
     "common": {
         "name": "fyta",
-        "version": "0.2.0",
+        "version": "0.2.1",
         "news": {
+            "0.2.1": {
+                "en": "Error messages corrected and specified",
+                "de": "Fehlermeldungen korrigiert und spezifiziert",
+                "ru": "Сообщения об ошибках исправлены и указаны",
+                "pt": "Mensagens de erro corrigidas e especificadas",
+                "nl": "Foutmeldingen gecorrigeerd en gespecificeerd",
+                "fr": "Messages d'erreur corrigés et spécifiés",
+                "it": "Messaggi di errore corretti e specificati",
+                "es": "Mensajes de error corregidos y especificados",
+                "pl": "Komunikaty błędów poprawione i określone",
+                "uk": "Помилка повідомлення виправлено і вказано",
+                "zh-cn": "错误消息更正和指定"
+            },
             "0.2.0": {
                 "en": "Added retrieval of raw values and use of internal notifications",
                 "de": "Ermittlung von Rohwerte und Verwendung interner Meldungen ergänzt",
