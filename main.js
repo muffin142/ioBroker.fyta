@@ -1,17 +1,5 @@
 "use strict";
 
-/*
- * Created with @iobroker/create-adapter v2.6.5
- */
-
-// The adapter-core module gives you access to the core ioBroker functions
-// you need to create an adapter
-/*
-const utils = require("@iobroker/adapter-core");
-const path = require("path");
-const statesDefinition = require("./lib/statesDefinition.js");
-const notificationsDefinition = require("./lib/notificationsDefinition.js");
-*/
 import * as utils from "@iobroker/adapter-core";
 import path from "path";
 import statesDefinition from "./lib/statesDefinition.js";
