@@ -277,10 +277,10 @@ class Fyta extends utils.Adapter {
 				}
 				return response.data;
 			}
-			this.log.error(`Retrieving raw values was not successfull`);
+			this.log.error(`Retrieving raw values for plantID ${plantID} was not successfull (HTTP-Status ${response.status})`);
 		} catch (error) {
 			// handle error
-			this.log.error("An error occured while retrieving gardens and plants.");
+			this.log.error("An error occured while retrieving raw values for plantID ${plantID}.");
 			this.log.debug(error);
 		}
 
