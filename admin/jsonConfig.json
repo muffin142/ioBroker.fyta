@@ -136,6 +136,16 @@
                     "lg": 3,
                     "xl": 3
                 },
+				"notificationsPlantAirHumidity": {
+                    "type": "checkbox",
+                    "label": "Air Humidity",
+					"hidden": "!data.notificationsEnabled",
+                    "xs": 12,
+                    "sm": 12,
+                    "md": 6,
+                    "lg": 3,
+                    "xl": 3
+                },
 				"_headerSensors": {
                     "newLine": true,
                     "type": "header",

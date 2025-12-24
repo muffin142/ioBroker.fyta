@@ -627,7 +627,7 @@ class Fyta extends utils.Adapter {
 		  }
 		  return undefined;
 		}, obj);
-	  }
+	}
 
 	/**
 	 * Sets and optionally creates a state if it doies not exists
