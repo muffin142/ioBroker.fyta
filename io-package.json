@@ -1,9 +1,9 @@
 {
     "common": {
         "name": "fyta",
-        "version": "0.2.3",
+        "version": "0.2.4",
         "news": {
-            "0.2.3": {
+            "0.2.4": {
                 "en": "Added additional notifications ans support for airt humidity status",
                 "de": "Zusätzliche Benachrichtigungen und Unterstützung für den Luftfeuchtigkeitsstatus hinzugefügt",
                 "ru": "Добавлены дополнительные уведомления и поддержка статуса влажности воздуха.",
