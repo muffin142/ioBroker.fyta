@@ -21,9 +21,8 @@ Sensors can be purchased an the [FYTA Shop](https://fyta.de/collections/all)
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
-### 0.2.2 (2025-12-28)
--	Added more notifications
--	Added staus for air humidity supported by V2 sensors
+### 0.2.3 (2025-12-28)
+-	fix: notifications
 
 ### 0.2.1 (2025-12-08)
 -	Error messages corrected and specified
