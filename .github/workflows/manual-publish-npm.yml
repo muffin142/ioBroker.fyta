@@ -1,4 +1,4 @@
-name: Manual publish NPM
+name: Manual npm publish
 
 on:
   workflow_dispatch:   # 👈 manueller Start per GitHub UI
