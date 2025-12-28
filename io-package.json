@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "fyta",
-        "version": "0.2.1",
+        "version": "0.2.2",
         "news": {
+            "0.2.2": {
+                "en": "Added additional notifications ans support for airt humidity status",
+                "de": "Zusätzliche Benachrichtigungen und Unterstützung für den Luftfeuchtigkeitsstatus hinzugefügt",
+                "ru": "Добавлены дополнительные уведомления и поддержка статуса влажности воздуха.",
+                "pt": "Adicionadas notificações adicionais e suporte para status de umidade do ar",
+                "nl": "Extra meldingen toegevoegd en ondersteuning voor de luchtvochtigheidsstatus",
+                "fr": "Ajout de notifications supplémentaires et prise en charge de l'état d'humidité de l'air",
+                "it": "Aggiunte ulteriori notifiche e supporto per lo stato dell'umidità dell'aria",
+                "es": "Se agregaron notificaciones adicionales y soporte para el estado de humedad del aire.",
+                "pl": "Dodano dodatkowe powiadomienia i obsługę stanu wilgotności powietrza",
+                "uk": "Додано додаткові сповіщення та підтримку стану вологості повітря",
+                "zh-cn": "添加了额外的通知以及对空气湿度状态的支持"
+            },
             "0.2.1": {
                 "en": "Error messages corrected and specified",
                 "de": "Fehlermeldungen korrigiert und spezifiziert",
