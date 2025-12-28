@@ -1,21 +1,23 @@
 {
-	"It a little too bright for %s": "It a little too bright for %s",
-	"It is too bright for %s": "It is too bright for %s",
-	"It is a little too dark for %s": "It is a little too dark for %s",
-	"It is too dark for %s": "It is too dark for %s",
-
-	"%s is overwatered": "%s is overwatered",
-	"%s has too little water": "%s has too little water",
-
-	"%s is overfertilized": "%s is overfertilized",
-	"%s must be fertilized": "%s must be fertilized",
-	"%s is too warm": "%s is too warm",
-	"%s is too cold": "%s is too cold",
-	"Sensor on %s (ID %s) is low on battery": "Sensor on %s (ID %s) is low on battery",
-
-	"Humidity is too low for %s": "Humidity is too lowfor %s",
-	"Humidity is a luttle bit too low for %s": "Humidity is a little bit too low for %s",
-	"Humidity is a little bit too high for %s": "Humidity is a little bit too high for %s",
-	"Humidity is too high for %s": "Humidity is too high for %s"
-
+  "%s has a little too little water": "%s has a little too little water",
+  "%s has too little water": "%s has too little water",
+  "%s is a littele bit too cold": "%s is a bit too cold",
+  "%s is a little bit to too warm": "%s is a little too warm",
+  "%s is a little overfertilized": "%s is a bit over-fertilized",
+  "%s is a little overwatered": "%s is a bit overwatered",
+  "%s is overfertilized": "%s is over-fertilized",
+  "%s is overwatered": "%s is overwatered",
+  "%s is too cold": "%s is too cold",
+  "%s is too warm": "%s is too warm",
+  "%s must be fertilized": "%s needs to be fertilized",
+  "%s needs to be fertilized soon": "%s needs to be fertilized soon",
+  "Humidity is a little bit too high for %s": "The humidity is a bit too high for %s",
+  "Humidity is a little bit too low for %s": "The humidity is a bit too low for %s",
+  "Humidity is too high for %s": "The humidity is too high for %s",
+  "Humidity is too low for %s": "The humidity is too low for %s",
+  "It a little too bright for %s": "It's a little too bright for %s",
+  "It is a little too dark for %s": "It's a little too dark for %s",
+  "It is too bright for %s": "It's too bright for %s",
+  "It is too dark for %s": "It's too dark for %s",
+  "Sensor on %s (ID %s) is low on battery": "The battery of the sensor %s (ID %s) is almost empty"
 }

@@ -455,7 +455,7 @@ class Fyta extends utils.Adapter {
 					}
 
 					// Looking for raw values
-					if(true){
+					if(this.config.retrieveRawValues){
 						const rawValues = await this.fytaRawValues(resultLogin.token, plant.id);
 						if(rawValues !== null){
 							const rawValuesObjectID = `${plantObjectID}.rawValues`;
