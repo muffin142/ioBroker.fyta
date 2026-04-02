@@ -268,7 +268,7 @@ class Fyta extends utils.Adapter {
 			this.log.error(`Retrieving raw values for plantID ${plantID} was not successfull (HTTP-Status ${response.status})`);
 		} catch (error) {
 			// handle error
-			this.log.error("An error occured while retrieving raw values for plantID ${plantID}.");
+			this.log.error(`An error occured while retrieving raw values for plantID ${plantID}.`);
 			this.log.debug(error);
 		}
 
@@ -705,7 +705,7 @@ class Fyta extends utils.Adapter {
 					});
 				})
 				.catch((error) => {
-					reject(new Error(`Failed to download image: ${error.message}`));
+					reject(new Error(`Failed to download image from ${url}: ${error.message}`));
 				});
 		});
 	}
