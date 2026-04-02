@@ -1,7 +1,7 @@
 "use strict";
 
 import * as utils from "@iobroker/adapter-core";
-import path from "path";
+import path from "node:path";
 import statesDefinition from "./lib/statesDefinition.js";
 import notificationsDefinition from "./lib/notificationsDefinition.js";
 
@@ -712,7 +712,7 @@ class Fyta extends utils.Adapter {
 }
 
 
-import { fileURLToPath } from 'url';
+import { fileURLToPath } from 'node:url';
 
 // Aktuelle Datei als Pfad
 const currentFile = fileURLToPath(import.meta.url);
