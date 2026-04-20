@@ -184,7 +184,7 @@ class Fyta extends utils.Adapter {
 					shouldStop: false,
 				};
 			} else {
-				this.log.error("An error occured while logging into FYTA API (HTTP-Status ${response.status}).");
+				this.log.error(`An error occured while logging into FYTA API (HTTP-Status ${response.status}).`);
 			}
 		} catch (error) {
 			// handle error
@@ -234,7 +234,7 @@ class Fyta extends utils.Adapter {
 			this.log.error(`Retrieving gardens and plants was not successfull (HTTP-Status ${response.status})`);
 		} catch (error) {
 			// handle error
-			this.log.error("An error occured while retrieving gardens and plants.");
+			this.log.error(`An error occured while retrieving gardens and plants: ${error.message}`);
 			this.log.debug(error);
 		}
 
@@ -249,13 +249,12 @@ class Fyta extends utils.Adapter {
 	async fytaRawValues(token, plantID){
 		this.log.debug(`Start fytaRawValues(***, ${plantID})`);
 
-		try {
-			const response = await axios.get(`https://web.fyta.de/api/user-plant/${plantID}`, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-					timeout: 10000, // only wait for 10s
-				},
-			});
+		axios.get(`https://web.fyta.de/api/user-plant/${plantID}`, {
+			headers: {
+				Authorization: `Bearer ${token}`,
+				timeout: 10000, // only wait for 10s
+			},
+		}).then(response => {
 
 			// Check for successfull response
 			this.log.debug(`Response status is ${response.status} (Data-Request)`);
@@ -266,11 +265,13 @@ class Fyta extends utils.Adapter {
 				return response.data;
 			}
 			this.log.error(`Retrieving raw values for plantID ${plantID} was not successfull (HTTP-Status ${response.status})`);
-		} catch (error) {
+
+		}).catch(error => {		
 			// handle error
-			this.log.error(`An error occured while retrieving raw values for plantID ${plantID}.`);
+			this.log.error(`An error occured while retrieving raw values for ${plantID}: ${error.message}`);
 			this.log.debug(error);
-		}
+		});
+	
 
 		return null;
 	}
@@ -318,13 +319,12 @@ class Fyta extends utils.Adapter {
 
 				//
 				// looping plants
-				data.plants.forEach(async (plant) => {
+				//data.plants.forEach(async (plant) => {
+				for (const plant of data.plants) {
 					this.log.debug(`Handling plant ${plant.nickname}`);
 
 					// Create plant object
 					let plantObjectID = "";
-					//if(this.options.dataLayout == "nested"){
-					// Place plant-object in garden
 
 					// Defaulting to virtual garden
 					plantObjectID = `${virtualGardenNameCleaned}.${this.cleanName(plant.nickname)}`;
@@ -339,12 +339,6 @@ class Fyta extends utils.Adapter {
 						this.log.debug(`Belongs to garden ${JSON.stringify(garden)}`);
 						plantObjectID = `${this.cleanName(garden.garden_name)}.${this.cleanName(plant.nickname)}`;
 					}
-					//}else if(this.options.dataLayout == "flat"){
-					//	plantObjectID = this.cleanName(plant.nickname);
-					//}else{
-					//	this.log.error("Unknown value for option \"dataLayout\": " + JSON.stringify(this.options.dataLayout));
-					//	return;
-					//}
 
 					// Need to create virtual garden?
 					if (plantObjectID.indexOf(`${virtualGardenNameCleaned}.`) > -1) {
@@ -387,6 +381,7 @@ class Fyta extends utils.Adapter {
 					this.setStatesOrCreate(plantObjectID, plant, "plant");
 
 					// Download Images if present
+					/*
 					["thumb_path", "origin_path"].forEach(async (property) => {
 						if (plant[property] !== "") {
 							const filename = path.join("plant", `${plant["id"]}_${property.split("_")[0]}.jpg`);
@@ -396,6 +391,10 @@ class Fyta extends utils.Adapter {
 								this.log.debug(`Skipped downloading file /${this.name}/${filename}`);
 								return;
 							}
+
+							// Wait to not stress the API
+							await this.sleep(800);
+							this.log.debug("Wait for not stressing API...");
 							this.downloadImage(plant[property], filename, resultLogin.token)
 								.then((filename) => {
 									this.setStateOrCreate(`${plantObjectID}.${property}_local`, filename, {
@@ -413,6 +412,38 @@ class Fyta extends utils.Adapter {
 								});
 						}
 					});
+					*/
+					for (const property of ["thumb_path", "origin_path"]) {
+						if (plant[property] !== "") {
+							const filename = path.join("plant", `${plant["id"]}_${property.split("_")[0]}.jpg`);
+
+							const fileExists = await this.fileExistsAsync(this.name, filename);
+							if (fileExists) {
+								this.log.debug(`Skipped downloading file /${this.name}/${filename}`);
+								continue;
+							}
+
+							// Wait to not stress the API
+							this.log.debug("Wait for not stressing API...");
+							await this.sleep(500);
+
+							this.downloadImage(plant[property], filename, resultLogin.token)
+								.then((filename) => {
+									this.setStateOrCreate(`${plantObjectID}.${property}_local`, filename, {
+										common: {
+											name: property,
+											type: "string",
+											role: "url",
+											read: true,
+											write: false,
+										},
+									});
+								})
+								.catch((error) => {
+									this.log.error(error.message);
+								});
+						}
+					}
 
 					// Looking for sensor
 					if (plant.sensor !== null) {
@@ -456,6 +487,11 @@ class Fyta extends utils.Adapter {
 
 					// Looking for raw values
 					if(this.config.retrieveRawValues){
+
+						// Wait to not stress the API
+						this.log.debug("Wait for not stressing API before RawValues...");
+						await this.sleep(800);
+
 						const rawValues = await this.fytaRawValues(resultLogin.token, plant.id);
 						if(rawValues !== null){
 							const rawValuesObjectID = `${plantObjectID}.rawValues`;
@@ -470,8 +506,9 @@ class Fyta extends utils.Adapter {
 
 							this.setStatesOrCreate(rawValuesObjectID, rawValues, "rawValues");
 						}
-					}
-				});
+					}					
+
+				};
 
 				this.setState("info.last_update", new Date().toLocaleString(), true);
 
@@ -675,7 +712,7 @@ class Fyta extends utils.Adapter {
 	/**
 	 * Downloads a custm plant image
 	 *
-	 * @param url	URL
+	 * @param url URL
 	 * @param filename filename
 	 * @param token Bearer Token
 	 */
@@ -705,9 +742,18 @@ class Fyta extends utils.Adapter {
 					});
 				})
 				.catch((error) => {
-					reject(new Error(`Failed to download image from ${url}: ${error.message}`));
+					reject(new Error(`An error occured while downloading image from ${url}: ${error.message}`));
 				});
 		});
+	}
+
+	/**
+	 * 
+	 * @param ms	Milliseconds to wait
+	 * @returns 
+	 */
+	sleep(ms) {
+		return new Promise(resolve => setTimeout(resolve, ms));
 	}
 }
 

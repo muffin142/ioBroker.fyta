@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "fyta",
-        "version": "0.2.4",
+        "version": "0.2.5",
         "news": {
+            "0.2.5": {
+                "en": "Made data retrieval more synchronous and introduced delays to avoid exceeding API limits",
+                "de": "Der Datenabruf wurde synchroner gestaltet und Verzögerungen eingeführt, um eine Überschreitung der API-Grenzwerte zu vermeiden",
+                "ru": "Получение данных стало более синхронным и введены задержки, чтобы избежать превышения ограничений API.",
+                "pt": "Tornou a recuperação de dados mais síncrona e introduziu atrasos para evitar exceder os limites da API",
+                "nl": "Het ophalen van gegevens is synchrooner geworden en er zijn vertragingen geïntroduceerd om te voorkomen dat de API-limieten worden overschreden",
+                "fr": "Rendu la récupération des données plus synchrone et introduction de délais pour éviter de dépasser les limites de l'API",
+                "it": "Recupero dei dati più sincrono e introdotto ritardi per evitare di superare i limiti API",
+                "es": "Hizo que la recuperación de datos sea más sincrónica e introdujo retrasos para evitar exceder los límites de API",
+                "pl": "Zwiększono synchronizację pobierania danych i wprowadzono opóźnienia, aby uniknąć przekroczenia limitów API",
+                "uk": "Зробили отримання даних більш синхронним і ввели затримки, щоб уникнути перевищення обмежень API",
+                "zh-cn": "使数据检索更加同步并引入延迟以避免超出 API 限制"
+            },
             "0.2.4": {
                 "en": "Added additional notifications ans support for airt humidity status",
                 "de": "Zusätzliche Benachrichtigungen und Unterstützung für den Luftfeuchtigkeitsstatus hinzugefügt",
