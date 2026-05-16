@@ -249,29 +249,34 @@ class Fyta extends utils.Adapter {
 	async fytaRawValues(token, plantID){
 		this.log.debug(`Start fytaRawValues(***, ${plantID})`);
 
-		axios.get(`https://web.fyta.de/api/user-plant/${plantID}`, {
-			headers: {
-				Authorization: `Bearer ${token}`,
-				timeout: 10000, // only wait for 10s
-			},
-		}).then(response => {
+		try{
+			axios.get(`https://web.fyta.de/api/user-plant/${plantID}`, {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					timeout: 10000, // only wait for 10s
+				},
+			}).then(response => {
 
-			// Check for successfull response
-			this.log.debug(`Response status is ${response.status} (Data-Request)`);
-			if (response.status === 200) {
-				if (!response.data) {
-					this.log.error("Response does not contain data");
+				// Check for successfull response
+				this.log.debug(`RawValue-Response status is ${response.status} (Data-Request)`);
+				if (response.status === 200) {
+					if (!response.data) {
+						this.log.error("RawValue-Response does not contain data");
+					}
+					return response.data;
 				}
-				return response.data;
-			}
-			this.log.error(`Retrieving raw values for plantID ${plantID} was not successfull (HTTP-Status ${response.status})`);
+				
+				this.log.error(`Retrieving raw values for plantID ${plantID} was not successfull (HTTP-Status ${response.status})`);
 
-		}).catch(error => {		
-			// handle error
-			this.log.error(`An error occured while retrieving raw values for ${plantID}: ${error.message}`);
-			this.log.debug(error);
-		});
-	
+			}).catch(error => {		
+				// handle error
+				this.log.error(`An axios-error occured while retrieving raw values for ${plantID}: ${error.message}`);
+				this.log.debug(error);
+			});
+		} catch (err) {
+			this.log.error(`An error occured while retrieving raw values for ${plantID}: ${err.message}`);
+		}
+		
 
 		return null;
 	}
@@ -496,6 +501,7 @@ class Fyta extends utils.Adapter {
 						if(rawValues !== null){
 							const rawValuesObjectID = `${plantObjectID}.rawValues`;
 
+							this.log.debug("reating RawValues Folder...");
 							this.setObjectNotExists(rawValuesObjectID, {
 								type: "folder",
 								common: {
@@ -505,6 +511,8 @@ class Fyta extends utils.Adapter {
 							});
 
 							this.setStatesOrCreate(rawValuesObjectID, rawValues, "rawValues");
+						}else{
+							this.log.error("RawValues-Object is null");						
 						}
 					}					
 
