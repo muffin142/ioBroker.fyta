@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "fyta",
-        "version": "0.2.5",
+        "version": "0.2.6",
         "news": {
+            "0.2.6": {
+                "en": "Updated dependencies, repaired raw value retrieval",
+                "de": "Aktualisierte Abhängigkeiten, repariert den Abriuf von RawValues",
+                "ru": "Обновлены зависимости, исправлено получение необработанных значений.",
+                "pt": "Dependências atualizadas, repara recuperação de valor bruto",
+                "nl": "Bijgewerkte afhankelijkheden, herstelt het ophalen van onbewerkte waarden",
+                "fr": "Dépendances mises à jour, répare la récupération de la valeur brute",
+                "it": "Dipendenze aggiornate, ripara il recupero dei valori grezzi",
+                "es": "Dependencias actualizadas, repara la recuperación de valor sin procesar.",
+                "pl": "Zaktualizowano zależności, naprawiono pobieranie wartości surowych",
+                "uk": "Оновлено залежності, виправлено пошук необроблених значень",
+                "zh-cn": "更新了依赖关系，修复了原始值检索"
+            },
             "0.2.5": {
                 "en": "Made data retrieval more synchronous and introduced delays to avoid exceeding API limits",
                 "de": "Der Datenabruf wurde synchroner gestaltet und Verzögerungen eingeführt, um eine Überschreitung der API-Grenzwerte zu vermeiden",
@@ -41,45 +54,6 @@
                 "pl": "Komunikaty błędów poprawione i określone",
                 "uk": "Помилка повідомлення виправлено і вказано",
                 "zh-cn": "错误消息更正和指定"
-            },
-            "0.2.0": {
-                "en": "Added retrieval of raw values and use of internal notifications",
-                "de": "Ermittlung von Rohwerte und Verwendung interner Meldungen ergänzt",
-                "ru": "Дополнительный поиск исходных значений и использование внутренних уведомлений",
-                "pt": "Recuperação adicional de valores brutos e utilização de notificações internas",
-                "nl": "Toegevoegd ophalen van ruwe waarden en gebruik van interne meldingen",
-                "fr": "Extraction supplémentaire de valeurs brutes et utilisation de notifications internes",
-                "it": "Aggiunto il recupero dei valori grezzi e l'uso delle notifiche interne",
-                "es": "Añadida recuperación de valores brutos uso indebido de notificaciones internas",
-                "pl": "Dodano pobieranie wartości surowych i korzystanie z powiadomień wewnętrznych",
-                "uk": "Додана ретривалізація значень, що не використовують внутрішні повідомлення",
-                "zh-cn": "未使用内部通知的原始值添加检索"
-            },
-            "0.1.5": {
-                "en": "Fix issue with image download",
-                "de": "Problem mit Bilderdownload behoben",
-                "ru": "Исправление проблемы с загрузкой изображений",
-                "pt": "Corrigir problema com download de imagem",
-                "nl": "Fix probleem met afbeelding download",
-                "fr": "Correction de problème avec téléchargement d'image",
-                "it": "Risolvere il problema con il download dell'immagine",
-                "es": "Edición de fijación con descarga de imagen",
-                "pl": "Napraw problem z pobieraniem obrazu",
-                "uk": "Виправлення проблеми з завантаженням зображень",
-                "zh-cn": "用图像下载处理问题"
-            },
-            "0.1.4": {
-                "en": "minor changes due to publishing to ioBroker.repository:latest",
-                "de": "Kleine Anpassungen für die veröffentlichung in ioBroker.repository:latest",
-                "ru": "незначительные изменения в связи с публикацией на ioBroker.repository:latest",
-                "pt": "pequenas alterações devido à publicação no ioBroker.repositório:mais tarde",
-                "nl": "kleine wijzigingen als gevolg van publicatie aan ioBroker.repository: laatste",
-                "fr": "modifications mineures dues à la publication à ioBroker.repository:latest",
-                "it": "modifiche minori dovute alla pubblicazione a ioBroker.repository:latest",
-                "es": "cambios menores debido a la publicación a ioBroker.repository:latest",
-                "pl": "drobne zmiany spowodowane publikacją do jOBroker.repository: najnowszy",
-                "uk": "незначні зміни у зв’язку з виданням ioBroker.repository:latest",
-                "zh-cn": "由于发布到 ioBroker.resitory:latest 导致的小变化"
             }
         },
         "titleLang": {
