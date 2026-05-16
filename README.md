@@ -21,6 +21,8 @@ Sensors can be purchased an the [FYTA Shop](https://fyta.de/collections/all)
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**
 -->
+### **WORK IN PROGRESS**
+
 ### 0.2.6 (2026-05-16)
 - 	Updated dependencies
 -	repaired raw value retrieval
