@@ -22,6 +22,7 @@ Sensors can be purchased an the [FYTA Shop](https://fyta.de/collections/all)
 	### **WORK IN PROGRESS**
 -->
 ### **WORK IN PROGRESS**
+-	none
 
 ### 0.2.6 (2026-05-16)
 - 	Updated dependencies
