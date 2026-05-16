@@ -250,6 +250,7 @@ class Fyta extends utils.Adapter {
 		this.log.debug(`Start fytaRawValues(***, ${plantID})`);
 
 		try{
+			/*
 			axios.get(`https://web.fyta.de/api/user-plant/${plantID}`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
@@ -273,6 +274,27 @@ class Fyta extends utils.Adapter {
 				this.log.error(`An axios-error occured while retrieving raw values for ${plantID}: ${error.message}`);
 				this.log.debug(error);
 			});
+			*/
+
+			const response = await axios.get("https://web.fyta.de/api/user-plant", {
+				headers: {
+					Authorization: `Bearer ${token}`,
+					timeout: 10000, // only wait for 10s
+				},
+			});
+
+			// Check for successfull response
+			this.log.debug(`RawValue-Response status is ${response.status} (Data-Request)`);
+			if (response.status === 200) {
+				if (!response.data) {
+					this.log.error("RawValue-Response does not contain data");
+				}
+				return response.data;
+			}
+			
+			this.log.error(`Retrieving raw values for plantID ${plantID} was not successfull (HTTP-Status ${response.status})`);
+
+
 		} catch (err) {
 			this.log.error(`An error occured while retrieving raw values for ${plantID}: ${err.message}`);
 		}
@@ -498,6 +520,7 @@ class Fyta extends utils.Adapter {
 						await this.sleep(800);
 
 						const rawValues = await this.fytaRawValues(resultLogin.token, plant.id);
+						this.log.debug("RawValues = " + JSON.stringify(rawValues));	
 						if(rawValues !== null){
 							const rawValuesObjectID = `${plantObjectID}.rawValues`;
 
