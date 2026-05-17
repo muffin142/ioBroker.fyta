@@ -276,7 +276,7 @@ class Fyta extends utils.Adapter {
 			});
 			*/
 
-			const response = await axios.get("https://web.fyta.de/api/user-plant", {
+			const response = await axios.get(`https://web.fyta.de/api/user-plant/${plantID}`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
 					timeout: 10000, // only wait for 10s
@@ -520,11 +520,9 @@ class Fyta extends utils.Adapter {
 						await this.sleep(800);
 
 						const rawValues = await this.fytaRawValues(resultLogin.token, plant.id);
-						this.log.debug("RawValues = " + JSON.stringify(rawValues));	
 						if(rawValues !== null){
 							const rawValuesObjectID = `${plantObjectID}.rawValues`;
 
-							this.log.debug("reating RawValues Folder...");
 							this.setObjectNotExists(rawValuesObjectID, {
 								type: "folder",
 								common: {
@@ -620,9 +618,11 @@ class Fyta extends utils.Adapter {
 		const notificationBase = notificationsDefinition[stateType];
 		
 		this.log.debug("StateType is " + stateType);
+		//this.log.debug("🔵" + JSON.stringify(obj));
 
 		for (const [stateSourceObject, stateDefinition] of Object.entries(statesToUse)) {
-			const objValue = this.getValueFromPath(obj, stateSourceObject)
+			const objValue = this.getValueFromPath(obj, stateSourceObject);
+			//this.log.debug(" " + objValue);
 
 			//if (!(stateSourceObject in obj) && !("def" in stateDefinition)) {
 			if (!(objValue !== undefined) && !("def" in stateDefinition)) {

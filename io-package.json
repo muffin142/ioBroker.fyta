@@ -1,11 +1,24 @@
 {
     "common": {
         "name": "fyta",
-        "version": "0.2.6",
+        "version": "0.2.7",
         "news": {
+            "0.2.7": {
+                "en": "repaired error in writing rawValues",
+                "de": "Fehler beim Schreiben von RawValues behoben",
+                "ru": "исправлена ​​ошибка при записи rawValues",
+                "pt": "erro reparado ao escrever rawValues",
+                "nl": "gerepareerde fout bij het schrijven van rawValues",
+                "fr": "erreur réparée dans l'écriture de rawValues",
+                "it": "riparato errore nella scrittura di rawValues",
+                "es": "error reparado al escribir rawValues",
+                "pl": "naprawiono błąd w zapisie rawValues",
+                "uk": "виправлено помилку в записі rawValues",
+                "zh-cn": "修复了写入 rawValues 时的错误"
+            },
             "0.2.6": {
                 "en": "Updated dependencies, repaired raw value retrieval",
-                "de": "Aktualisierte Abhängigkeiten, repariert den Abriuf von RawValues",
+                "de": "Aktualisierte Abhängigkeiten, repariert den Abruf von RawValues",
                 "ru": "Обновлены зависимости, исправлено получение необработанных значений.",
                 "pt": "Dependências atualizadas, repara recuperação de valor bruto",
                 "nl": "Bijgewerkte afhankelijkheden, herstelt het ophalen van onbewerkte waarden",
