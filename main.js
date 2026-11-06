@@ -75,10 +75,11 @@ class Fyta extends utils.Adapter {
 
 
 		// Define reccuring loading function
-		let loadDataFailedCount = 0;
-		const loadDataFailedMaxCount = 3;
+		//let loadDataFailedCount = 0;
+		//const loadDataFailedMaxCount = 3;
 		const intervalFn = () => {
 			this.loadData().then((success) => {
+				/*
 				if (!success || success == null) {
 					loadDataFailedCount++;
 
@@ -99,6 +100,7 @@ class Fyta extends utils.Adapter {
 				} else {
 					loadDataFailedCount = 0;
 				}
+				*/
 			});
 		};
 
@@ -779,12 +781,17 @@ class Fyta extends utils.Adapter {
 	}
 
 	/**
-	 * 
-	 * @param ms	Milliseconds to wait
-	 * @returns 
+	 * Wartet die angegebene Zeit.
+	 * @param {number} ms Millisekunden
+	 * @returns {Promise<void>}
 	 */
 	sleep(ms) {
-		return new Promise(resolve => setTimeout(resolve, ms));
+		return new Promise(resolve => {
+			const timer = this.setTimeout(() => {
+				this.clearTimeout(timer);
+				resolve();
+			}, ms);
+		});
 	}
 }
 
