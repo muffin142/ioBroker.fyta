@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "fyta",
-    "version": "0.2.8",
+    "version": "0.2.9",
     "news": {
+      "0.2.9": {
+        "en": "Enabled automated Releases\nUpdated Dependencies",
+        "de": "Automatisierte Releases\nNeue Abhängigkeiten",
+        "ru": "Включенные автоматические релизы\nОбновленные зависимости",
+        "pt": "Versões automáticas ativadas\nDependências novas",
+        "nl": "Geautomatiseerde releases ingeschakeld\nBijgewerkte afhankelijkheden",
+        "fr": "Sorties automatisées activées\nDépendances mises à jour",
+        "it": "Rilasci automatici abilitati\nDipendenze nuove",
+        "es": "Permitió lanzamientos automáticos\nDependencias actualizadas",
+        "pl": "Włączone automatyczne wydania\nZaktualizowane zależności",
+        "uk": "Увімкнені автоматичні випуски\nОновлені залежності",
+        "zh-cn": "启用自动发布\n更新的依赖关系"
+      },
       "0.2.8": {
         "en": "Enabled automated Releases",
         "de": "Automatisierte Releases",

@@ -19,7 +19,7 @@ Sensors can be purchased an the [FYTA Shop](https://fyta.de/collections/all)
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**		
 -->
-### **WORK IN PROGRESS**	
+### 0.2.9 (2026-11-07)	
 -	Enabled automated Releases
 -	Updated Dependencies
 

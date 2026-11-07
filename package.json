@@ -1,6 +1,6 @@
 {
   "name": "iobroker.fyta",
-  "version": "0.2.8",
+  "version": "0.2.9",
   "description": "Adapter to connect ioBroker to FYTA plant sensors",
   "author": {
     "name": "muffin142",
