@@ -20,7 +20,7 @@ Sensors can be purchased an the [FYTA Shop](https://fyta.de/collections/all)
 	### **WORK IN PROGRESS**		
 -->
 ### **WORK IN PROGRESS**
--	Enabling automated Releases
+-	Enabled automated Releases
 
 ### 0.2.7 (2026-05-17)
 -	repaired error in writing rawValues
