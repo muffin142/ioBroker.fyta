@@ -5,7 +5,7 @@ import path from "node:path";
 import statesDefinition from "./lib/statesDefinition.js";
 import notificationsDefinition from "./lib/notificationsDefinition.js";
 
-import axios from "axios";
+const REQUEST_TIMEOUT_MS = 10000; // only wait for 10s
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -156,24 +156,24 @@ class Fyta extends utils.Adapter {
 
 		let shouldStop = false;
 		try {
-			const response = await axios.post(
-				"https://web.fyta.de/api/auth/login",
-				{
+			const response = await fetch("https://web.fyta.de/api/auth/login", {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify({
 					email: email,
 					password: password,
-				},
-				{
-					headers: {
-						"Content-Type": "application/json",
-						timeout: 10000, // only wait for 10s
-					},
-				},
-			);
+				}),
+				signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+			});
 
 			// Check for successfull response
 			this.log.debug(`Response status is ${response.status} (Login-Request)`);
 			if (response.status === 200) {
-				if (!response.data || !response.data.access_token) {
+				/** @type {any} */
+				const data = await response.json();
+				if (!data || !data.access_token) {
 					this.log.error("Response does not contain access_token");
 					return null;
 				}
@@ -182,23 +182,21 @@ class Fyta extends utils.Adapter {
 				this.log.debug("Got access_token, returning");
 
 				return {
-					token: response.data.access_token,
+					token: data.access_token,
 					shouldStop: false,
 				};
+			} else if (response.status === 401) {
+				this.log.error("Login to FYTA API was rejected due to wrong Password. Please check config.");
+				shouldStop = true;
+			} else if (response.status === 404) {
+				this.log.error("Login to FYTA API was rejected due to wrong eMail. Please check config.");
 			} else {
 				this.log.error(`An error occured while logging into FYTA API (HTTP-Status ${response.status}).`);
 			}
 		} catch (error) {
-			// handle error
-			if (/\b401\b/.test(error)) {
-				this.log.error("Login to FYTA API was rejected due to wrong Password. Please check config.");
-				shouldStop = true;
-			} else if (/\b404\b/.test(error)) {
-				this.log.error("Login to FYTA API was rejected due to wrong eMail. Please check config.");
-			} else {
-				this.log.error("An unknown error occured while logging into FYTA API.");
-				this.log.debug(error);
-			}
+			// handle error (network error, timeout, invalid JSON)
+			this.log.error(`An unknown error occured while logging into FYTA API: ${error.message}`);
+			this.log.debug(error);
 		}
 
 		this.setState("info.connection", false, true);
@@ -217,21 +215,23 @@ class Fyta extends utils.Adapter {
 		this.log.debug("Start fytaGetData(***)");
 
 		try {
-			const response = await axios.get("https://web.fyta.de/api/user-plant", {
+			const response = await fetch("https://web.fyta.de/api/user-plant", {
 				headers: {
 					Authorization: `Bearer ${token}`,
-					timeout: 10000, // only wait for 10s
 				},
+				signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
 			});
 
 			// Check for successfull response
 			this.log.debug(`Response status is ${response.status} (Data-Request)`);
 			if (response.status === 200) {
-				if (!response.data) {
-					this.log.error("Response does not contain access_token");
+				/** @type {any} */
+				const data = await response.json();
+				if (!data) {
+					this.log.error("Response does not contain data");
 				}
 
-				return response.data;
+				return data;
 			}
 			this.log.error(`Retrieving gardens and plants was not successfull (HTTP-Status ${response.status})`);
 		} catch (error) {
@@ -251,56 +251,29 @@ class Fyta extends utils.Adapter {
 	async fytaRawValues(token, plantID){
 		this.log.debug(`Start fytaRawValues(***, ${plantID})`);
 
-		try{
-			/*
-			axios.get(`https://web.fyta.de/api/user-plant/${plantID}`, {
+		try {
+			const response = await fetch(`https://web.fyta.de/api/user-plant/${plantID}`, {
 				headers: {
 					Authorization: `Bearer ${token}`,
-					timeout: 10000, // only wait for 10s
 				},
-			}).then(response => {
-
-				// Check for successfull response
-				this.log.debug(`RawValue-Response status is ${response.status} (Data-Request)`);
-				if (response.status === 200) {
-					if (!response.data) {
-						this.log.error("RawValue-Response does not contain data");
-					}
-					return response.data;
-				}
-				
-				this.log.error(`Retrieving raw values for plantID ${plantID} was not successfull (HTTP-Status ${response.status})`);
-
-			}).catch(error => {		
-				// handle error
-				this.log.error(`An axios-error occured while retrieving raw values for ${plantID}: ${error.message}`);
-				this.log.debug(error);
-			});
-			*/
-
-			const response = await axios.get(`https://web.fyta.de/api/user-plant/${plantID}`, {
-				headers: {
-					Authorization: `Bearer ${token}`,
-					timeout: 10000, // only wait for 10s
-				},
+				signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
 			});
 
 			// Check for successfull response
 			this.log.debug(`RawValue-Response status is ${response.status} (Data-Request)`);
 			if (response.status === 200) {
-				if (!response.data) {
+				/** @type {any} */
+				const data = await response.json();
+				if (!data) {
 					this.log.error("RawValue-Response does not contain data");
 				}
-				return response.data;
+				return data;
 			}
-			
+
 			this.log.error(`Retrieving raw values for plantID ${plantID} was not successfull (HTTP-Status ${response.status})`);
-
-
 		} catch (err) {
 			this.log.error(`An error occured while retrieving raw values for ${plantID}: ${err.message}`);
 		}
-		
 
 		return null;
 	}
@@ -750,34 +723,34 @@ class Fyta extends utils.Adapter {
 	 * @param token Bearer Token
 	 */
 	async downloadImage(url, filename, token) {
-		return new Promise((resolve, reject) => {
-			this.log.debug(`Download ${url} -> ${filename}`);
+		this.log.debug(`Download ${url} -> ${filename}`);
 
-			axios({
-				method: "get",
-				url: url,
-				responseType: "arraybuffer", // Ensures we handle the data as a stream
+		let buffer;
+		try {
+			const response = await fetch(url, {
 				headers: {
 					Authorization: `Bearer ${token}`,
-					timeout: 10000, // only wait for 10s
 				},
-			})
-				.then((response) => {
-					if (!response.data) {
-						reject(new Error("Response does not contain data"));
-					}
+				signal: AbortSignal.timeout(REQUEST_TIMEOUT_MS),
+			});
 
-					this.log.debug("Download successfull");
+			if (!response.ok) {
+				throw new Error(`HTTP-Status ${response.status}`);
+			}
 
-					const buffer = Buffer.from(response.data, "binary");
-					this.writeFileAsync(this.name, filename, buffer).then(() => {
-						resolve(`/${path.join(this.name, filename)}`);
-					});
-				})
-				.catch((error) => {
-					reject(new Error(`An error occured while downloading image from ${url}: ${error.message}`));
-				});
-		});
+			buffer = Buffer.from(await response.arrayBuffer());
+		} catch (error) {
+			throw new Error(`An error occured while downloading image from ${url}: ${error.message}`);
+		}
+
+		if (buffer.length === 0) {
+			throw new Error("Response does not contain data");
+		}
+
+		this.log.debug("Download successfull");
+
+		await this.writeFileAsync(this.name, filename, buffer);
+		return `/${path.join(this.name, filename)}`;
 	}
 
 	/**

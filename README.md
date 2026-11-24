@@ -19,6 +19,9 @@ Sensors can be purchased an the [FYTA Shop](https://fyta.de/collections/all)
 	Placeholder for the next version (at the beginning of the line):
 	### **WORK IN PROGRESS**		
 -->
+### **WORK IN PROGRESS**
+-	Removed axios dependency and added @iobroker/adapter-core as a dependency.
+
 ### 0.2.9 (2026-11-07)	
 -	Enabled automated Releases
 -	Updated Dependencies
