@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "fyta",
-    "version": "0.2.9",
+    "version": "0.3.0",
     "news": {
+      "0.3.0": {
+        "en": "Removed axios dependency",
+        "de": "Axios-Abhängigkeit entfernt",
+        "ru": "Удалена зависимость от axios",
+        "pt": "Dependência axios removida",
+        "nl": "De afhankelijkheid van axios verwijderd",
+        "fr": "Dépendance axios supprimée",
+        "it": "Dipendenza axios rimossa",
+        "es": "Se eliminó la dependencia de Axios",
+        "pl": "Usunięto zależność axios",
+        "uk": "Видалена залежність від axios",
+        "zh-cn": "删除了 axios 依赖关系"
+      },
       "0.2.9": {
         "en": "Enabled automated Releases\nUpdated Dependencies",
         "de": "Automatisierte Releases\nNeue Abhängigkeiten",
@@ -80,19 +93,6 @@
         "pl": "Dodano dodatkowe powiadomienia i obsługę stanu wilgotności powietrza",
         "uk": "Додано додаткові сповіщення та підтримку стану вологості повітря",
         "zh-cn": "添加了额外的通知以及对空气湿度状态的支持"
-      },
-      "0.2.1": {
-        "en": "Error messages corrected and specified",
-        "de": "Fehlermeldungen korrigiert und spezifiziert",
-        "ru": "Сообщения об ошибках исправлены и указаны",
-        "pt": "Mensagens de erro corrigidas e especificadas",
-        "nl": "Foutmeldingen gecorrigeerd en gespecificeerd",
-        "fr": "Messages d'erreur corrigés et spécifiés",
-        "it": "Messaggi di errore corretti e specificati",
-        "es": "Mensajes de error corregidos y especificados",
-        "pl": "Komunikaty błędów poprawione i określone",
-        "uk": "Помилка повідомлення виправлено і вказано",
-        "zh-cn": "错误消息更正和指定"
       }
     },
     "titleLang": {
